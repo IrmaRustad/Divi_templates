@@ -172,7 +172,16 @@ async function cmdDiscover(){
   const items = [];
   const seenPages = new Set(); // key: category|layout_slug
 
-  await Promise.all(layoutDetailLinks.slice(0, 30).map(link => limit(async () => { // limit initial scope to 30 for safety
+  // Parse optional --max flag (default 100 for broader coverage, still safe)
+  const extra = process.argv.slice(3);
+  let max = 100;
+  const maxIdx = extra.findIndex(a => a === '--max');
+  if (maxIdx !== -1 && extra[maxIdx+1]) {
+    const n = parseInt(extra[maxIdx+1], 10);
+    if (!Number.isNaN(n) && n > 0) max = n;
+  }
+
+  await Promise.all(layoutDetailLinks.slice(0, max).map(link => limit(async () => {
     if (robots.crawlDelayMs) await sleep(robots.crawlDelayMs);
     const html = await politeFetch(link, cfg);
     const $ = cheerio.load(html);
@@ -215,7 +224,7 @@ async function cmdDiscover(){
   const discovered = { items };
   await fs.writeJson(path.join(dataDir, 'work', 'discovered.json'), discovered, { spaces: 2 });
   await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: layoutDetailLinks }, { spaces: 2 });
-  console.log(`discover: ${items.length} item(s). Limited to a safe subset for the first run.`);
+  console.log(`discover: ${items.length} item(s). Processed up to max=${max}.`);
 }
 
 async function cmdThumbs(){
