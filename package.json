@@ -5,6 +5,7 @@
   "type": "commonjs",
   "engines": { "node": ">=20" },
   "scripts": {
+    "setup": "npx playwright install --with-deps",
     "discover": "node ./scripts/index.mjs discover",
     "enrich": "node ./scripts/index.mjs enrich",
     "thumbs": "node ./scripts/index.mjs thumbs",
