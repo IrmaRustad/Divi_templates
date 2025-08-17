@@ -1,0 +1,62 @@
+name: Deploy Pages
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 06:00 UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Setup Playwright (Chromium)
+        run: npm run setup
+
+      - name: Discover
+        run: npm run discover
+
+      - name: Thumbnails
+        run: npm run thumbs
+
+      - name: Publish manifest
+        run: npm run publish
+
+      - name: Validate manifest
+        run: npm run validate
+
+      - name: Upload artifact (dist)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

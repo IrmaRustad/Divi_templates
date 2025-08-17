@@ -1,6 +1,6 @@
 {
   "schema": "1.2",
-  "generated_at": "2025-08-17T07:21:43.330Z",
+  "generated_at": "2025-08-17T08:08:56.402Z",
   "source": {
     "crawl_version": "2025.08.17",
     "seeds": [
@@ -10,17 +10,304 @@
   },
   "items": [
     {
-      "pack_id": "design-agency",
-      "pack_name": "Design Agency",
-      "category": "art-design",
-      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pack_id": "agency",
+      "pack_name": "Agency",
+      "category": "pack",
       "pages": [
         {
-          "page_name": "Contact",
-          "layout_slug": "design-agency-contact-page",
-          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page/live-demo",
-          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page",
-          "thumbnail": "https://raw.githubusercontent.com/IrmaRustad/Divi_templates/main/dist/thumbs/art-design/design-agency-contact-page.webp"
+          "page_name": "Page",
+          "layout_slug": "agency",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/agency/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/agency"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "restaurant",
+      "pack_name": "Restaurant",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "restaurant",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/restaurant/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/restaurant"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "learning-management-lms",
+      "pack_name": "Learning Management Lms",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Management",
+          "layout_slug": "learning-management-lms",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/learning-management-lms/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/learning-management-lms"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "design-agency",
+      "pack_name": "Design Agency",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Design",
+          "layout_slug": "design-agency",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/design-agency/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/design-agency"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion",
+      "pack_name": "Fashion",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "fashion",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/fashion/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/fashion"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop",
+      "pack_name": "Coffee Shop",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Coffee",
+          "layout_slug": "coffee-shop",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/coffee-shop/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/coffee-shop"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market",
+      "pack_name": "Farmers Market",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Farmers",
+          "layout_slug": "farmers-market",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/farmers-market/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/farmers-market"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "yoga-studio",
+      "pack_name": "Yoga Studio",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Yoga",
+          "layout_slug": "yoga-studio",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/yoga-studio/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/yoga-studio"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "wedding",
+      "pack_name": "Wedding",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "wedding",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/wedding/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/wedding"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "travel-agency",
+      "pack_name": "Travel Agency",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Travel",
+          "layout_slug": "travel-agency",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/travel-agency/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/travel-agency"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "photo-marketplace",
+      "pack_name": "Photo Marketplace",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Photo",
+          "layout_slug": "photo-marketplace",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/photo-marketplace/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/photo-marketplace"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "copywriter",
+      "pack_name": "Copywriter",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "copywriter",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/copywriter/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/copywriter"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "florist",
+      "pack_name": "Florist",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "florist",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/florist/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/florist"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company",
+      "pack_name": "Saas Company",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Saas",
+          "layout_slug": "saas-company",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/saas-company/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/saas-company"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "web-agency",
+      "pack_name": "Web Agency",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Web",
+          "layout_slug": "web-agency",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/web-agency/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/web-agency"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "interior-design-company",
+      "pack_name": "Interior Design Company",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Design",
+          "layout_slug": "interior-design-company",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/interior-design-company/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/interior-design-company"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments",
+      "pack_name": "Digital Payments",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Digital",
+          "layout_slug": "digital-payments",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/digital-payments/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/digital-payments"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "seo-agency",
+      "pack_name": "Seo Agency",
+      "category": "pack",
+      "pages": [
+        {
+          "page_name": "Seo",
+          "layout_slug": "seo-agency",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/seo-agency/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/seo-agency"
         }
       ],
       "facets": {},

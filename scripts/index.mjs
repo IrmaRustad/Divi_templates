@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 import fs from 'fs-extra';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 import { performance } from 'node:perf_hooks';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { readFile } from 'node:fs/promises';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { fetch } from 'undici';
+import pLimit from 'p-limit';
+import crypto from 'node:crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +18,50 @@ const root = process.cwd();
 const specsDir = path.join(root, 'SPECS');
 const dataDir = path.join(root, 'data');
 const distDir = path.join(root, 'dist');
+const cacheDir = path.join(root, '.cache', 'http');
+
+
+async function ensureCache(){
+  await fs.ensureDir(cacheDir);
+}
+
+async function obeyRobots(host){
+  try{
+    const robotsUrl = `https://${host}/robots.txt`;
+    const res = await fetch(robotsUrl, { headers: { 'user-agent': 'DiviCatalogBot/1.0' } });
+    if (!res.ok) return { allowed: true, crawlDelayMs: 0 };
+    const txt = await res.text();
+    // very simple parse for Crawl-delay under User-agent: *
+    const lines = txt.split(/\r?\n/);
+    let uaStar = false; let delay = 0;
+    for (const line of lines){
+      const L = line.trim();
+      if (/^user-agent:\s*\*/i.test(L)) { uaStar = true; continue; }
+      if (/^user-agent:/i.test(L)) { uaStar = false; continue; }
+      if (uaStar && /^crawl-delay:/i.test(L)) {
+        const num = parseFloat(L.split(':')[1]);
+        if (!isNaN(num)) delay = num * 1000;
+      }
+    }
+    return { allowed: true, crawlDelayMs: delay };
+  } catch { return { allowed: true, crawlDelayMs: 0 }; }
+}
+
+function cacheKey(url){
+  return crypto.createHash('sha1').update(url).digest('hex') + '.json';
+}
+
+async function loadCache(url){
+  try{
+    const fp = path.join(cacheDir, cacheKey(url));
+    return await fs.readJson(fp);
+  } catch { return null; }
+}
+
+async function saveCache(url, meta){
+  const fp = path.join(cacheDir, cacheKey(url));
+  await fs.writeJson(fp, meta, { spaces: 0 });
+}
 
 async function loadConfig(){
   const local = path.join(specsDir, 'config.json');
@@ -55,33 +101,121 @@ function deriveFromDemoUrl(demoUrl){
   return { category, layoutSlug, packId, packName, pageName: pageNameTitle, layoutUrl };
 }
 
+async function politeFetch(url, cfg){
+  await ensureCache();
+  const ua = cfg.userAgent || 'DiviCatalogBot/1.0';
+  const prior = await loadCache(url);
+  const headers = { 'user-agent': ua };
+  if (prior?.etag) headers['if-none-match'] = prior.etag;
+  if (prior?.lastModified) headers['if-modified-since'] = prior.lastModified;
+  let attempt = 0;
+  while (true){
+    attempt++;
+    const res = await fetch(url, { headers, redirect: 'follow' });
+    if (res.status === 304 && prior?.body){
+      return prior.body;
+    }
+    if (res.status === 429 || (res.status >= 500 && res.status < 600)){
+      const backoff = Math.min(60000, (cfg.linkHealth?.retryBackoffMs || 1000) * Math.pow(2, attempt-1));
+      await sleep(backoff);
+      if (attempt < (cfg.linkHealth?.retryCount || 3)) continue;
+    }
+    if (!res.ok){
+      throw new Error(`HTTP ${res.status} for ${url}`);
+    }
+    const body = await res.text();
+    const etag = res.headers.get('etag') || undefined;
+    const lastModified = res.headers.get('last-modified') || undefined;
+    await saveCache(url, { etag, lastModified, body });
+    return body;
+  }
+}
+
+function extractLayoutLinks($){
+  // On category/layouts hub pages, select links to layout detail pages
+  const links = new Set();
+  $('a[href^="/layouts/"]').each((i,el)=>{
+    const href = $(el).attr('href');
+    if (!href) return;
+    // accept /layouts/<category>/<layout-slug>
+    const parts = href.split('/').filter(Boolean);
+    if (parts.length >= 3 && parts[0]==='layouts') links.add(`https://www.elegantthemes.com${href}`);
+  });
+  return Array.from(links);
+}
+
+function extractLiveDemoLink($){
+  // Prefer explicit "View Live Demo" link; fallback to appending /live-demo
+  let liveDemo = '';
+  $('a').each((i,el)=>{
+    const text = String($(el).text()||'').trim().toLowerCase();
+    const href = $(el).attr('href') || '';
+    if (text.includes('live demo') || href.endsWith('/live-demo')){
+      liveDemo = href.startsWith('http') ? href : `https://www.elegantthemes.com${href}`;
+      return false;
+    }
+  });
+  return liveDemo;
+}
+
 async function cmdDiscover(){
   await ensureDirs();
-  // Minimal seed using provided example live demo
-  const demo = 'https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page/live-demo';
-  const info = deriveFromDemoUrl(demo);
-  const item = {
-    pack_id: info.packId,
-    pack_name: info.packName,
-    category: info.category,
-    source_post: '',
-    pages: [
-      {
-        page_name: info.pageName,
-        layout_slug: info.layoutSlug,
-        demo_url: demo,
-        layout_url: info.layoutUrl,
-        thumbnail: ''
-      }
-    ],
-    facets: {},
-    approved: true,
-    version: '1.0.0',
-    notes: ''
-  };
-  const discovered = { items: [item] };
+  await ensureCache();
+  const cfg = await loadConfig();
+  const hubUrl = 'https://www.elegantthemes.com/layouts/';
+  const robots = await obeyRobots('www.elegantthemes.com');
+  const hubHtml = await politeFetch(hubUrl, cfg);
+  const cheerio = await import('cheerio');
+  const $hub = cheerio.load(hubHtml);
+  const layoutDetailLinks = extractLayoutLinks($hub);
+  const limit = pLimit(cfg.rateLimit?.rps || 3);
+  const items = [];
+  const seenPages = new Set(); // key: category|layout_slug
+
+  await Promise.all(layoutDetailLinks.slice(0, 30).map(link => limit(async () => { // limit initial scope to 30 for safety
+    if (robots.crawlDelayMs) await sleep(robots.crawlDelayMs);
+    const html = await politeFetch(link, cfg);
+    const $ = cheerio.load(html);
+    // derive category and layout slug from URL
+    const u = new URL(link);
+    const parts = u.pathname.split('/').filter(Boolean);
+    const category = parts[1];
+    const layoutSlug = parts[2];
+    const packBase = layoutSlug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
+    const packId = packBase;
+    const packName = titleCaseFromSlug(packBase);
+    const layoutUrl = link;
+    const demoUrl = extractLiveDemoLink($) || `${layoutUrl}/live-demo`;
+    const key = `${category}|${layoutSlug}`;
+    if (seenPages.has(key)) return; seenPages.add(key);
+
+    const pageName = titleCaseFromSlug(layoutSlug.split('-').slice(-2, -1)[0] || 'Page');
+    const pack = {
+      pack_id: packId,
+      pack_name: packName,
+      category,
+      source_post: '',
+      pages: [
+        {
+          page_name: pageName,
+          layout_slug: layoutSlug,
+          demo_url: demoUrl,
+          layout_url: layoutUrl,
+          thumbnail: ''
+        }
+      ],
+      facets: {},
+      approved: true,
+      version: '1.0.0',
+      notes: ''
+    };
+    items.push(pack);
+  })));
+
+  const discovered = { items };
   await fs.writeJson(path.join(dataDir, 'work', 'discovered.json'), discovered, { spaces: 2 });
-  console.log('discover: wrote data/work/discovered.json (1 item)');
+  await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: layoutDetailLinks }, { spaces: 2 });
+  console.log(`discover: ${items.length} item(s). Limited to a safe subset for the first run.`);
 }
 
 async function cmdThumbs(){
@@ -180,7 +314,9 @@ async function cmdPublish(){
   };
   // Rewrite relative thumbs to absolute http(s)
   for (const pack of manifest.items){
+    if (!pack.source_post) delete pack.source_post;
     for (const page of pack.pages){
+      if (!page.thumbnail) delete page.thumbnail;
       if (page.thumbnail && !/^https?:\/\//i.test(page.thumbnail)){
         const base = cfg.cdn?.baseUrl?.replace(/\/$/,'');
         if (cfg.cdn?.rewriteThumbPaths && base){
