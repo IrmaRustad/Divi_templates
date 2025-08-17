@@ -1,7 +1,12 @@
 name: Deploy Pages
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      max:
+        description: 'Max items to discover'
+        required: false
+        default: '100'
   schedule:
     - cron: '0 6 * * 1'  # Weekly Monday 06:00 UTC
 
@@ -12,7 +17,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -33,7 +38,7 @@ jobs:
         run: npm run setup
 
       - name: Discover
-        run: npm run discover
+        run: npm run discover -- --max ${{ github.event.inputs.max }}
 
       - name: Thumbnails
         run: npm run thumbs
@@ -43,6 +48,22 @@ jobs:
 
       - name: Validate manifest
         run: npm run validate
+
+      - name: Upload discovered.json (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovered-json
+          path: data/work/discovered.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Job summary
+        run: |
+          echo "### Deploy Pages Summary" >> $GITHUB_STEP_SUMMARY
+          COUNT=$(node -e "console.log(require('./dist/manifest.json').items.length)")
+          echo "- Items in manifest: $COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Max requested: ${{ github.event.inputs.max || 'default(100)' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Manifest: https://irmarustad.github.io/Divi_templates/dist/manifest.json" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload artifact (dist)
         uses: actions/upload-pages-artifact@v3
