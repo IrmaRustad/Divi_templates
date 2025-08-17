@@ -238,9 +238,28 @@ async function cmdThumbs(){
       for (const page of pack.pages){
         const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
         const p = await ctx.newPage();
+        // 1) Load the public demo landing
         await p.goto(page.demo_url, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
-        // allow a short settle
-        await p.waitForTimeout(1500);
+        // 2) Try to accept common cookie banners
+        try {
+          await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 });
+        } catch {}
+        // 3) If the page wraps the demo in an iframe, navigate directly to its src
+        try {
+          const iframe = p.frameLocator('iframe').first();
+          const el = p.locator('iframe').first();
+          const count = await p.locator('iframe').count();
+          if (count > 0){
+            const src = await el.getAttribute('src');
+            if (src && /^https?:/i.test(src)){
+              await p.goto(src, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
+            }
+          }
+        } catch {}
+        // 4) Wait for a stable Divi selector
+        try { await p.waitForSelector('#main-content, .et_pb_section', { timeout: 10000 }); } catch {}
+        // 5) Small settle then screenshot the viewport
+        await p.waitForTimeout(1200);
         const buf = await p.screenshot({ fullPage: false });
         await ctx.close();
         // process with sharp to target 1200x675 webp
