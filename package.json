@@ -1,0 +1,35 @@
+{
+  "name": "divi_templates",
+  "version": "1.0.0",
+  "description": "Divi live-demo catalog pipeline",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "discover": "node ./scripts/index.mjs discover",
+    "enrich": "node ./scripts/index.mjs enrich",
+    "thumbs": "node ./scripts/index.mjs thumbs",
+    "publish": "node ./scripts/index.mjs publish",
+    "validate": "node ./scripts/index.mjs validate",
+    "check-links": "node ./scripts/index.mjs check-links",
+    "postinstall": "playwright install chromium",
+    "test": "node ./scripts/index.mjs validate"
+  },
+  "keywords": [
+    "divi",
+    "crawler",
+    "manifest"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "cheerio": "^1.1.2",
+    "fs-extra": "^11.3.1",
+    "kleur": "^4.1.5",
+    "p-limit": "^7.0.0",
+    "playwright": "^1.54.2",
+    "sharp": "^0.34.3",
+    "undici": "^7.13.0"
+  }
+}

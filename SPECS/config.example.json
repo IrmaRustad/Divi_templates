@@ -1,0 +1,32 @@
+{
+  "userAgent": "DiviCatalogBot/1.0 (+https://example.com/contact)",
+  "rateLimit": { "rps": 3, "jitterMs": 150 },
+  "timeouts": { "requestMs": 15000, "navMs": 20000 },
+  "viewports": { "w": 1366, "h": 900 },
+  "cache": { "dir": ".cache/http", "respectEtags": true },
+  "thumbs": { "format": "webp", "maxW": 1200, "maxH": 675, "quality": 82 },
+  "paths": {
+    "raw": "data/raw",
+    "work": "data/work",
+    "dist": "dist",
+    "thumbs": "dist/thumbs"
+  },
+  "cdn": {
+    "baseUrl": "",
+    "rewriteThumbPaths": false
+  },
+  "linkHealth": {
+    "retryCount": 3,
+    "retryBackoffMs": 1000,
+    "demoteAfterConsecutiveFailures": 3,
+    "demotionWindowHours": 24
+  },
+  "thresholds": {
+    "luminance": { "lightMin": 0.6, "darkMax": 0.4 },
+    "colorfulness": { "lowMax": 0.25, "highMin": 0.5 },
+    "density": { "airyMaxModules": 6, "denseMinModules": 14, "viewportDepth": 1.5 },
+    "complexity": { "low": 1, "high": 5 },
+    "wcagPassMin": 4.5
+  }
+}
+

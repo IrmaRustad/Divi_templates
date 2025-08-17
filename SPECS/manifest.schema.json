@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/divi/manifest.schema.json",
+  "title": "Divi Live-Demo Catalog Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "1.2" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "crawl_version": { "type": "string" },
+        "seeds": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": []
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/pack" }
+    }
+  },
+  "required": ["schema", "generated_at", "items"],
+  "$defs": {
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pack_id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "pack_name": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "source_post": { "type": "string", "format": "uri" },
+        "pages": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/page" }
+        },
+        "facets": { "$ref": "#/$defs/facets" },
+        "approved": { "type": "boolean" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "notes": { "type": "string" }
+      },
+      "required": ["pack_id", "pack_name", "category", "pages"]
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "page_name": { "type": "string" },
+        "layout_slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "demo_url": { "type": "string", "format": "uri" },
+        "layout_url": { "type": "string", "format": "uri" },
+        "thumbnail": { "type": "string", "format": "uri" }
+      },
+      "required": ["layout_slug", "demo_url"]
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "background_style": { "type": "string", "enum": ["light", "dark", "colorful"] },
+        "colorfulness": { "type": "string", "enum": ["low", "medium", "high"] },
+        "font_pair": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "heading": { "type": "string" },
+            "body": { "type": "string" }
+          },
+          "required": ["heading", "body"]
+        },
+        "font_mood": { "type": "string", "enum": ["modern", "classic", "playful", "technical"] },
+        "visual_density": { "type": "string", "enum": ["airy", "balanced", "dense"] },
+        "complexity": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "wcag_contrast": { "type": "string", "enum": ["pass", "warn"] }
+      },
+      "required": []
+    }
+  }
+}
+

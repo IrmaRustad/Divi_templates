@@ -1,0 +1,32 @@
+{
+  "schema": "1.2",
+  "generated_at": "2025-08-17T07:21:43.330Z",
+  "source": {
+    "crawl_version": "2025.08.17",
+    "seeds": [
+      "blog-packs",
+      "layout-pages"
+    ]
+  },
+  "items": [
+    {
+      "pack_id": "design-agency",
+      "pack_name": "Design Agency",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Contact",
+          "layout_slug": "design-agency-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page",
+          "thumbnail": "https://raw.githubusercontent.com/IrmaRustad/Divi_templates/main/dist/thumbs/art-design/design-agency-contact-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    }
+  ]
+}

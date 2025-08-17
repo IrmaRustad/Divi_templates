@@ -1,0 +1,7 @@
+node_modules/
+.cache/
+dist/thumbs/
+dist/**/*.webp
+dist/**/*.avif
+*.log
+
