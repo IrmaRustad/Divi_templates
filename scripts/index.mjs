@@ -315,12 +315,41 @@ async function cmdPublish(){
   const discoveredPath = path.join(dataDir, 'work', 'discovered.json');
   const exists = await fs.pathExists(discoveredPath);
   const base = exists ? await fs.readJson(discoveredPath) : { items: [] };
+  // Merge with previous manifest (accumulate across runs)
+  const prevPath = path.join(distDir, 'manifest.json');
+  let prev = { items: [] };
+  try { if (await fs.pathExists(prevPath)) prev = await fs.readJson(prevPath); } catch {}
+
+  function mergePacks(prevItems, newItems){
+    const byId = new Map();
+    for (const p of prevItems || []) byId.set(p.pack_id, JSON.parse(JSON.stringify(p)));
+    for (const p of (newItems || [])){
+      const existing = byId.get(p.pack_id);
+      if (!existing){ byId.set(p.pack_id, JSON.parse(JSON.stringify(p))); continue; }
+      // merge shallow fields
+      existing.pack_name = existing.pack_name || p.pack_name;
+      existing.category = existing.category || p.category;
+      if (!existing.source_post && p.source_post) existing.source_post = p.source_post;
+      // merge pages by layout_slug
+      existing.pages = existing.pages || [];
+      for (const pg of (p.pages || [])){
+        const i = existing.pages.findIndex(x => x.layout_slug === pg.layout_slug);
+        if (i === -1) existing.pages.push(pg);
+        else existing.pages[i] = { ...existing.pages[i], ...pg };
+      }
+    }
+    return Array.from(byId.values());
+  }
+
+  const mergedItems = mergePacks(prev.items || [], base.items || []);
+
   const manifest = {
     schema: '1.2',
     generated_at: new Date().toISOString(),
     source: { crawl_version: new Date().toISOString().slice(0,10).replace(/-/g,'.'), seeds: ['blog-packs','layout-pages'] },
-    items: base.items || []
+    items: mergedItems
   };
+
   // Rewrite relative thumbs to absolute http(s)
   for (const pack of manifest.items){
     if (!pack.source_post) delete pack.source_post;
@@ -337,10 +366,17 @@ async function cmdPublish(){
       }
     }
   }
+
+  // Save snapshot history of the manifest per day (optional audit trail)
+  const histDir = path.join(dataDir, 'history');
+  await fs.ensureDir(histDir);
+  const stamp = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  await fs.writeJson(path.join(histDir, `manifest-${stamp}.json`), manifest, { spaces: 2 });
+
   const tmp = path.join(distDir, 'manifest.tmp.json');
   await fs.writeJson(tmp, manifest, { spaces: 2 });
   await fs.move(tmp, path.join(distDir, 'manifest.json'), { overwrite: true });
-  console.log('publish: wrote dist/manifest.json');
+  console.log('publish: wrote dist/manifest.json (accumulated)');
 }
 
 async function cmdValidate(){
