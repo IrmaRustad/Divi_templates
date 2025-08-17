@@ -2,3 +2,15 @@ node_modules/
 .cache/
 *.log
 .DS_Store
+
+# Local download bundles and zips
+catalog_local/
+catalog_full/
+*.zip
+
+# Generated working data (per-run)
+data/work/
+data/history/
+
+# Generated thumbnails (published via Pages artifact)
+dist/thumbs/

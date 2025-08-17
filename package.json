@@ -11,6 +11,7 @@
     "thumbs": "node ./scripts/index.mjs thumbs",
     "publish": "node ./scripts/index.mjs publish",
     "validate": "node ./scripts/index.mjs validate",
+    "download:catalog": "node ./scripts/download_catalog.mjs",
     "check-links": "node ./scripts/index.mjs check-links",
     "postinstall": "playwright install chromium",
     "test": "node ./scripts/index.mjs validate"
