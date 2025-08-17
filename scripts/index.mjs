@@ -319,6 +319,14 @@ async function cmdPublish(){
   const prevPath = path.join(distDir, 'manifest.json');
   let prev = { items: [] };
   try { if (await fs.pathExists(prevPath)) prev = await fs.readJson(prevPath); } catch {}
+  // Prefer the published manifest from Pages if available, so accumulation persists across CI runs
+  try {
+    const base = cfg.cdn?.baseUrl?.replace(/\/$/, '');
+    if (base){
+      const res = await fetch(`${base}/dist/manifest.json`, { headers: { 'user-agent': cfg.userAgent || 'DiviCatalogBot/1.0' } });
+      if (res.ok){ prev = await res.json(); }
+    }
+  } catch {}
 
   function mergePacks(prevItems, newItems){
     const byId = new Map();
