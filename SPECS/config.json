@@ -12,7 +12,7 @@
     "thumbs": "dist/thumbs"
   },
   "cdn": {
-    "baseUrl": "https://irmarustad.github.io/Divi_templates/dist",
+    "baseUrl": "https://irmarustad.github.io/Divi_templates",
     "rewriteThumbPaths": true
   },
   "linkHealth": {

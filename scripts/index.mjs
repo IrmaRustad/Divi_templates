@@ -320,7 +320,8 @@ async function cmdPublish(){
       if (page.thumbnail && !/^https?:\/\//i.test(page.thumbnail)){
         const base = cfg.cdn?.baseUrl?.replace(/\/$/,'');
         if (cfg.cdn?.rewriteThumbPaths && base){
-          page.thumbnail = `${base}/${page.thumbnail}`;
+          // Pages publishes dist/ to the site root; our relative path starts with 'thumbs/...'
+          page.thumbnail = `${base}/dist/${page.thumbnail}`;
         } else {
           throw new Error(`publish: thumbnail for ${pack.pack_id}/${page.layout_slug} is not http(s). Set cdn.baseUrl and cdn.rewriteThumbPaths=true.`);
         }
