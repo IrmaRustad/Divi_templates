@@ -232,47 +232,70 @@ async function cmdThumbs(){
   const discoveredPath = path.join(dataDir, 'work', 'discovered.json');
   const data = await fs.readJson(discoveredPath);
   const { chromium } = await import('playwright');
+  const sharp = (await import('sharp')).default;
+  const cheerio = await import('cheerio');
   const browser = await chromium.launch();
   try {
     for (const pack of data.items){
       for (const page of pack.pages){
+        const outDir = path.join(distDir, 'thumbs', pack.category);
+        await fs.ensureDir(outDir);
+        const outPath = path.join(outDir, `${page.layout_slug}.webp`);
+
+        // 0) If already exists, skip (idempotent)
+        if (await fs.pathExists(outPath)){
+          page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
+          if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
+          console.log(`thumbs: exists ${outPath} (skip)`);
+          continue;
+        }
+
+        // 1) Try to download existing catalog thumbnail (og:image / twitter:image)
+        let usedDownloaded = false;
+        try {
+          const html = await politeFetch(page.layout_url, cfg);
+          const $ = cheerio.load(html);
+          let imgUrl = $('meta[property="og:image"]').attr('content') || $('meta[name="twitter:image"]').attr('content');
+          if (imgUrl){
+            if (!/^https?:/i.test(imgUrl)) imgUrl = new URL(imgUrl, page.layout_url).href;
+            const res = await fetch(imgUrl, { headers: { 'user-agent': cfg.userAgent || 'DiviCatalogBot/1.0' } });
+            if (res.ok){
+              const buf = Buffer.from(await res.arrayBuffer());
+              const img = sharp(buf).resize({ width: cfg.thumbs.maxW, height: cfg.thumbs.maxH, fit: 'cover' }).webp({ quality: cfg.thumbs.quality });
+              await img.toFile(outPath);
+              page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
+              if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
+              console.log(`thumbs: downloaded og:image -> ${outPath}`);
+              usedDownloaded = true;
+            }
+          }
+        } catch {}
+
+        if (usedDownloaded) continue;
+
+        // 2) Fallback: open the live demo and capture a screenshot
         const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
         const p = await ctx.newPage();
-        // 1) Load the public demo landing
         await p.goto(page.demo_url, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
-        // 2) Try to accept common cookie banners
+        try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
         try {
-          await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 });
-        } catch {}
-        // 3) If the page wraps the demo in an iframe, navigate directly to its src
-        try {
-          const iframe = p.frameLocator('iframe').first();
           const el = p.locator('iframe').first();
-          const count = await p.locator('iframe').count();
-          if (count > 0){
+          if (await p.locator('iframe').count() > 0){
             const src = await el.getAttribute('src');
             if (src && /^https?:/i.test(src)){
               await p.goto(src, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
             }
           }
         } catch {}
-        // 4) Wait for a stable Divi selector
         try { await p.waitForSelector('#main-content, .et_pb_section', { timeout: 10000 }); } catch {}
-        // 5) Small settle then screenshot the viewport
         await p.waitForTimeout(1200);
         const buf = await p.screenshot({ fullPage: false });
         await ctx.close();
-        // process with sharp to target 1200x675 webp
-        const sharp = (await import('sharp')).default;
-        const outDir = path.join(distDir, 'thumbs', pack.category);
-        await fs.ensureDir(outDir);
-        const outPath = path.join(outDir, `${page.layout_slug}.webp`);
         const img = sharp(buf).resize({ width: cfg.thumbs.maxW, height: cfg.thumbs.maxH, fit: 'cover' }).webp({ quality: cfg.thumbs.quality });
         await img.toFile(outPath);
-        // Store relative repo path in discovered.json
         page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
         if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
-        console.log(`thumbs: wrote ${outPath}`);
+        console.log(`thumbs: fallback screenshot -> ${outPath}`);
       }
     }
     await fs.writeJson(discoveredPath, data, { spaces: 2 });
