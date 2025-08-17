@@ -167,21 +167,50 @@ async function cmdDiscover(){
   const hubHtml = await politeFetch(hubUrl, cfg);
   const cheerio = await import('cheerio');
   const $hub = cheerio.load(hubHtml);
-  const layoutDetailLinks = extractLayoutLinks($hub);
+
+  // Helper: fetch links from sitemap index and nested urlsets
+  async function fetchSitemapLinks(){
+    const links = new Set();
+    try{
+      const idxUrl = 'https://www.elegantthemes.com/sitemap_index.xml';
+      const xml = await politeFetch(idxUrl, cfg);
+      const $x = cheerio.load(xml, { xmlMode: true });
+      const sitemaps = $x('sitemap > loc').map((i,el)=>$x(el).text().trim()).get();
+      const candidateMaps = sitemaps.filter(u => /sitemap|layouts|layout/i.test(u));
+      const urlsets = candidateMaps.length ? candidateMaps : sitemaps;
+      for (const sm of urlsets){
+        try{
+          const sx = await politeFetch(sm, cfg);
+          const $u = cheerio.load(sx, { xmlMode: true });
+          $u('url > loc').each((i,el)=>{
+            const loc = $u(el).text().trim();
+            if (/^https?:\/\/www\.elegantthemes\.com\/layouts\/[a-z0-9-]+\/[a-z0-9-]+\/?$/i.test(loc)) links.add(loc.replace(/\/$/,''));
+          });
+        } catch {}
+      }
+    } catch {}
+    return Array.from(links);
+  }
+
+  const hubLinks = extractLayoutLinks($hub);
+  const mapLinks = await fetchSitemapLinks();
+  const merged = Array.from(new Set([...hubLinks, ...mapLinks]));
+
   const limit = pLimit(cfg.rateLimit?.rps || 3);
   const items = [];
   const seenPages = new Set(); // key: category|layout_slug
 
-  // Parse optional --max flag (default 100 for broader coverage, still safe)
+  // Parse optional --max flag (default 100), allow 0 = no cap
   const extra = process.argv.slice(3);
   let max = 100;
   const maxIdx = extra.findIndex(a => a === '--max');
-  if (maxIdx !== -1 && extra[maxIdx+1]) {
+  if (maxIdx !== -1 && extra[maxIdx+1] !== undefined) {
     const n = parseInt(extra[maxIdx+1], 10);
-    if (!Number.isNaN(n) && n > 0) max = n;
+    if (!Number.isNaN(n)) max = n;
   }
+  const linksToProcess = (max && max > 0) ? merged.slice(0, max) : merged;
 
-  await Promise.all(layoutDetailLinks.slice(0, max).map(link => limit(async () => {
+  await Promise.all(linksToProcess.map(link => limit(async () => {
     if (robots.crawlDelayMs) await sleep(robots.crawlDelayMs);
     const html = await politeFetch(link, cfg);
     const $ = cheerio.load(html);
@@ -223,8 +252,8 @@ async function cmdDiscover(){
 
   const discovered = { items };
   await fs.writeJson(path.join(dataDir, 'work', 'discovered.json'), discovered, { spaces: 2 });
-  await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: layoutDetailLinks }, { spaces: 2 });
-  console.log(`discover: ${items.length} item(s). Processed up to max=${max}.`);
+  await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: merged }, { spaces: 2 });
+  console.log(`discover: ${items.length} item(s). Processed up to max=${max}. (merged ${merged.length} link(s))`);
 }
 
 async function cmdThumbs(){
