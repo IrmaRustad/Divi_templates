@@ -274,12 +274,12 @@ async function cmdThumbs(){
         // 0) If already exists, skip (idempotent)
         if (await fs.pathExists(outPath)){
           page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
-          if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
+          if (!pack.source_post) pack.source_post = 'https://www.elegthemes.com/layouts/';
           console.log(`thumbs: exists ${outPath} (skip)`);
           continue;
         }
 
-        // 1) Try to download existing catalog thumbnail (og:image / twitter:image)
+        // 1) Try to download existing catalog thumbnail via HTML (may be blocked by CF)
         let usedDownloaded = false;
         try {
           const html = await politeFetch(page.layout_url, cfg);
@@ -294,13 +294,41 @@ async function cmdThumbs(){
               await img.toFile(outPath);
               page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
               if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
-              console.log(`thumbs: downloaded og:image -> ${outPath}`);
+              console.log(`thumbs: downloaded og:image (static) -> ${outPath}`);
               usedDownloaded = true;
             }
           }
         } catch {}
 
-        if (usedDownloaded) continue;
+        // 1b) If still missing, use Playwright to read meta tags in-browser (bypass CF)
+        if (!usedDownloaded){
+          const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
+          const p = await ctx.newPage();
+          try{
+            await p.goto(page.layout_url, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
+            try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+            const metaUrl = await p.evaluate(() => {
+              const a = document.querySelector('meta[property="og:image"]');
+              const b = document.querySelector('meta[name="twitter:image"]');
+              return (a?.getAttribute('content') || b?.getAttribute('content') || '').trim();
+            });
+            if (metaUrl){
+              const abs = metaUrl.startsWith('http') ? metaUrl : new URL(metaUrl, location.href).href;
+              const res = await fetch(abs);
+              if (res.ok){
+                const buf = Buffer.from(await res.arrayBuffer());
+                const img = sharp(buf).resize({ width: cfg.thumbs.maxW, height: cfg.thumbs.maxH, fit: 'cover' }).webp({ quality: cfg.thumbs.quality });
+                await img.toFile(outPath);
+                page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
+                if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
+                console.log(`thumbs: downloaded og:image (browser) -> ${outPath}`);
+                usedDownloaded = true;
+              }
+            }
+          } catch {} finally { await ctx.close(); }
+        }
+
+        if (usedDownloaded) { continue; }
 
         // 2) Fallback: open the live demo and capture a screenshot
         const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
