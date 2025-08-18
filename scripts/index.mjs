@@ -226,17 +226,23 @@ async function cmdDiscover(){
       const p = await ctx.newPage();
       let pageLinks = [];
       try{
-        await p.goto(link, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
+        await p.goto(link, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 30000) });
         try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+        // Scroll to trigger lazy content
+        await p.evaluate(async () => {
+          await new Promise(r => {
+            let y = 0; const step = () => { y += 800; window.scrollTo(0,y); if (y < document.body.scrollHeight) requestAnimationFrame(step); else setTimeout(r, 500); }; step();
+          });
+        });
+        // Wait for inner page anchors to appear
+        try { await p.waitForSelector('a[href^="/layouts/"][href$="-page"]', { timeout: 10000 }); } catch {}
         pageLinks = await p.evaluate(() => {
-          const abs = (href) => href.startsWith('http') ? href : (`https://www.elegantthemes.com${href}`);
-          const anchors = Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
+          const abs = (href) => href && href.startsWith('http') ? href : (href ? `https://www.elegantthemes.com${href}` : '');
+          const anchors = Array.from(document.querySelectorAll('a[href^="/layouts/"][href$="-page"]'))
             .map(a => a.getAttribute('href') || '')
-            .filter(h => h.split('/').filter(Boolean).length >= 3)
+            .filter(Boolean)
             .map(h => abs(h));
-          // Prefer explicit inner pages ending with -page; if none, include current link
-          const inner = anchors.filter(h => /\/layouts\/[^/]+\/[a-z0-9-]+-page$/i.test(new URL(h).pathname));
-          return inner.length ? Array.from(new Set(inner)) : [location.href.replace(/\/$/,'')];
+          return anchors.length ? Array.from(new Set(anchors.map(h => h.replace(/\/$/,'')))) : [location.href.replace(/\/$/,'')];
         });
       } catch {} finally { await ctx.close(); }
 
@@ -254,7 +260,7 @@ async function cmdDiscover(){
         const pname = titleCaseFromSlug(packBase2);
         let pack = packsById.get(pid);
         if (!pack){
-          pack = { pack_id: pid, pack_name: pname, category: cat, source_post: '', pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
+          pack = { pack_id: pid, pack_name: pname, category: cat, source_post: 'https://www.elegantthemes.com/layouts/', pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
           packsById.set(pid, pack);
         }
         if (!pack.pages.find(x => x.layout_slug === slug)){
@@ -437,7 +443,8 @@ async function cmdPublish(){
   try {
     const base = cfg.cdn?.baseUrl?.replace(/\/$/, '');
     if (base){
-      const res = await fetch(`${base}/dist/manifest.json`, { headers: { 'user-agent': cfg.userAgent || 'DiviCatalogBot/1.0' } });
+      // Pages serves the contents of dist/ at the site root
+      const res = await fetch(`${base}/manifest.json`, { headers: { 'user-agent': cfg.userAgent || 'DiviCatalogBot/1.0' } });
       if (res.ok){ prev = await res.json(); }
     }
   } catch {}
