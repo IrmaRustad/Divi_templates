@@ -166,6 +166,7 @@ async function cmdDiscover(){
   const robots = await obeyRobots('www.elegantthemes.com');
   const hubHtml = await politeFetch(hubUrl, cfg);
   const cheerio = await import('cheerio');
+  const { chromium } = await import('playwright');
   const $hub = cheerio.load(hubHtml);
 
   // Helper: fetch links from sitemap index and nested urlsets
@@ -196,10 +197,6 @@ async function cmdDiscover(){
   const mapLinks = await fetchSitemapLinks();
   const merged = Array.from(new Set([...hubLinks, ...mapLinks]));
 
-  const limit = pLimit(cfg.rateLimit?.rps || 3);
-  const items = [];
-  const seenPages = new Set(); // key: category|layout_slug
-
   // Parse optional --max flag (default 100), allow 0 = no cap
   const extra = process.argv.slice(3);
   let max = 100;
@@ -210,50 +207,68 @@ async function cmdDiscover(){
   }
   const linksToProcess = (max && max > 0) ? merged.slice(0, max) : merged;
 
-  await Promise.all(linksToProcess.map(link => limit(async () => {
-    if (robots.crawlDelayMs) await sleep(robots.crawlDelayMs);
-    const html = await politeFetch(link, cfg);
-    const $ = cheerio.load(html);
-    // derive category and layout slug from URL
-    const u = new URL(link);
-    const parts = u.pathname.split('/').filter(Boolean);
-    const category = parts[1];
-    const layoutSlug = parts[2];
-    const packBase = layoutSlug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
-    const packId = packBase;
-    const packName = titleCaseFromSlug(packBase);
-    const layoutUrl = link;
-    const demoUrl = extractLiveDemoLink($) || `${layoutUrl}/live-demo`;
-    const key = `${category}|${layoutSlug}`;
-    if (seenPages.has(key)) return; seenPages.add(key);
+  // Use headless browser to enumerate inner page links per pack
+  const browser = await chromium.launch();
+  const packsById = new Map();
+  const allPageLinks = new Set();
+  try{
+    for (const link of linksToProcess){
+      if (robots.crawlDelayMs) await sleep(robots.crawlDelayMs);
+      const u = new URL(link);
+      const parts = u.pathname.split('/').filter(Boolean);
+      const category = parts[1];
+      const layoutSlug = parts[2];
+      const packBase = layoutSlug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
+      const packId = packBase;
+      const packName = titleCaseFromSlug(packBase);
 
-    const pageName = titleCaseFromSlug(layoutSlug.split('-').slice(-2, -1)[0] || 'Page');
-    const pack = {
-      pack_id: packId,
-      pack_name: packName,
-      category,
-      source_post: '',
-      pages: [
-        {
-          page_name: pageName,
-          layout_slug: layoutSlug,
-          demo_url: demoUrl,
-          layout_url: layoutUrl,
-          thumbnail: ''
+      const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
+      const p = await ctx.newPage();
+      let pageLinks = [];
+      try{
+        await p.goto(link, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
+        try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+        pageLinks = await p.evaluate(() => {
+          const abs = (href) => href.startsWith('http') ? href : (`https://www.elegantthemes.com${href}`);
+          const anchors = Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
+            .map(a => a.getAttribute('href') || '')
+            .filter(h => h.split('/').filter(Boolean).length >= 3)
+            .map(h => abs(h));
+          // Prefer explicit inner pages ending with -page; if none, include current link
+          const inner = anchors.filter(h => /\/layouts\/[^/]+\/[a-z0-9-]+-page$/i.test(new URL(h).pathname));
+          return inner.length ? Array.from(new Set(inner)) : [location.href.replace(/\/$/,'')];
+        });
+      } catch {} finally { await ctx.close(); }
+
+      for (const loc of pageLinks){
+        allPageLinks.add(loc.replace(/\/$/,''));
+        const uu = new URL(loc);
+        const pp = uu.pathname.split('/').filter(Boolean);
+        const cat = pp[1];
+        const slug = pp[2];
+        const segs = slug.split('-');
+        let pageName = 'Page';
+        if (segs.length >= 2 && segs[segs.length-1] === 'page'){ pageName = segs[segs.length-2]; }
+        const packBase2 = slug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
+        const pid = packBase2;
+        const pname = titleCaseFromSlug(packBase2);
+        let pack = packsById.get(pid);
+        if (!pack){
+          pack = { pack_id: pid, pack_name: pname, category: cat, source_post: '', pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
+          packsById.set(pid, pack);
         }
-      ],
-      facets: {},
-      approved: true,
-      version: '1.0.0',
-      notes: ''
-    };
-    items.push(pack);
-  })));
+        if (!pack.pages.find(x => x.layout_slug === slug)){
+          pack.pages.push({ page_name: titleCaseFromSlug(pageName), layout_slug: slug, demo_url: `${loc.replace(/\/$/,'')}/live-demo`, layout_url: loc.replace(/\/$/,''), thumbnail: '' });
+        }
+      }
+    }
+  } finally { await browser.close(); }
 
+  const items = Array.from(packsById.values());
   const discovered = { items };
   await fs.writeJson(path.join(dataDir, 'work', 'discovered.json'), discovered, { spaces: 2 });
-  await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: merged }, { spaces: 2 });
-  console.log(`discover: ${items.length} item(s). Processed up to max=${max}. (merged ${merged.length} link(s))`);
+  await fs.writeJson(path.join(dataDir, 'raw', 'layout_pages.json'), { urls: Array.from(allPageLinks) }, { spaces: 2 });
+  console.log(`discover: ${items.length} pack(s). Total pages=${Array.from(allPageLinks).length}. max=${max}.`);
 }
 
 async function cmdThumbs(){
