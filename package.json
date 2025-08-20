@@ -14,7 +14,8 @@
     "download:catalog": "node ./scripts/download_catalog.mjs",
     "check-links": "node ./scripts/index.mjs check-links",
     "postinstall": "playwright install chromium",
-    "test": "node ./scripts/index.mjs validate"
+    "test": "node ./scripts/index.mjs validate",
+    "crawl:loop": "node ./scripts/loop.mjs --interval 180 --max 0"
   },
   "keywords": [
     "divi",
