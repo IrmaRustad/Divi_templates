@@ -263,24 +263,28 @@ async function cmdDiscover(){
       const p = await ctx.newPage();
       let pageLinks = [];
       try{
-        await p.goto(link, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 30000) });
+        await p.goto(link, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 45000) });
         try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
-        // Scroll to trigger lazy content
-        await p.evaluate(async () => {
-          await new Promise(r => {
-            let y = 0; const step = () => { y += 800; window.scrollTo(0,y); if (y < document.body.scrollHeight) requestAnimationFrame(step); else setTimeout(r, 500); }; step();
-          });
-        });
-        // Wait for inner page anchors to appear
-        try { await p.waitForSelector('a[href^="/layouts/"][href$="-page"]', { timeout: 10000 }); } catch {}
-        pageLinks = await p.evaluate(() => {
+        // Scroll multiple passes to trigger lazy content
+        for (let i=0;i<25;i++){ await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(500); }
+        // Robust extraction: any anchors that contain this pack slug and end with -page, anywhere on the page
+        pageLinks = await p.evaluate((packHref)=>{
           const abs = (href) => href && href.startsWith('http') ? href : (href ? `https://www.elegantthemes.com${href}` : '');
-          const anchors = Array.from(document.querySelectorAll('a[href^="/layouts/"][href$="-page"]'))
+          const all = Array.from(document.querySelectorAll('a[href]'))
             .map(a => a.getAttribute('href') || '')
             .filter(Boolean)
-            .map(h => abs(h));
-          return anchors.length ? Array.from(new Set(anchors.map(h => h.replace(/\/$/,'')))) : [location.href.replace(/\/$/,'')];
-        });
+            .map(h => abs(h.replace(/#.*$/,'')));
+          const slug = (packHref.split('/').filter(Boolean)[2] || '').replace(/\/$/,'');
+          const wanted = all.filter(u => /\/layouts\//.test(u) && /-page\/?$/.test(u) && u.includes(`/${slug.split('-')[0]}`) );
+          // Also include any data-permalink attributes present on cards
+          const dataPermas = Array.from(document.querySelectorAll('[data-permalink]'))
+            .map(el => el.getAttribute('data-permalink')||'')
+            .filter(Boolean)
+            .map(abs)
+            .filter(u => /\/layouts\//.test(u) && /-page\/?$/.test(u));
+          const urls = Array.from(new Set([...wanted, ...dataPermas])).map(u => u.replace(/\/$/,''));
+          return urls.length ? urls : [location.href.replace(/\/$/,'')];
+        }, link);
       } catch {} finally { await ctx.close(); }
 
       for (const loc of pageLinks){
