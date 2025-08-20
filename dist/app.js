@@ -11,11 +11,19 @@ const state = { data: [], categories: [], q: '', cat: '' };
 
 const html = (s,...v)=>{ const t=document.createElement('template'); t.innerHTML=s.reduce((a,c,i)=>a+c+(i<v.length?v[i]:''),'').trim(); return t.content.firstElementChild; };
 const norm = s => (s||'').toLowerCase();
-
+const isRemote = u => /^https?:\/\//i.test(u||'');
+function localThumb(pack, page){
+  const cat = (pack && pack.category) ? String(pack.category) : 'pack';
+  const slug = (page && page.layout_slug) ? page.layout_slug : (pack?.pack_id||'');
+  // Prefer the declared category path, fall back to pack/ for local subsets
+  return `thumbs/${cat}/${slug}.webp`;
+}
 function heroThumb(pack){
   const pages = pack.pages||[];
   const home = pages.find(p=>/home-page$/i.test(p.layout_slug));
-  return (home||pages[0]||{}).thumbnail || '';
+  const chosen = (home||pages[0]||{});
+  const th = chosen.thumbnail||'';
+  return isRemote(th) ? localThumb(pack, chosen) : th;
 }
 
 function renderPackCard(pack){
@@ -39,7 +47,7 @@ function renderPackPages(pack){
   for (const page of (pack.pages||[])){
     const row = html`
       <div class="page">
-        <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name} – ${page.page_name}" src="${page.thumbnail||''}">
+        <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name} – ${page.page_name}" src="${isRemote(page.thumbnail)?localThumb(pack,page):page.thumbnail||''}">
         <div class="title small">${page.page_name}</div>
         <div class="row">
           <a class="btn" href="${page.layout_url}" target="_blank" rel="noopener">Layout</a>
