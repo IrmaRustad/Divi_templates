@@ -195,7 +195,44 @@ async function cmdDiscover(){
 
   const hubLinks = extractLayoutLinks($hub);
   const mapLinks = await fetchSitemapLinks();
-  const merged = Array.from(new Set([...hubLinks, ...mapLinks]));
+
+  // Crawl category archives via Playwright to capture packs not in sitemap/hub (infinite scroll)
+  async function fetchCategoryPackLinks(){
+    const catAnchors = new Set();
+    $hub('a[href^="/layouts/category/"]').each((i,el)=>{
+      const href = $hub(el).attr('href')||''; if (href) catAnchors.add(`https://www.elegantthemes.com${href}`);
+    });
+    const cats = Array.from(catAnchors);
+    const packs = new Set();
+    if (!cats.length) return [];
+    const browser = await chromium.launch();
+    try{
+      for (const catUrl of cats){
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 1600 } });
+        const p = await ctx.newPage();
+        try{
+          await p.goto(catUrl, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 30000) });
+          try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+          // Scroll several times to load all cards (safety cap)
+          for (let i=0;i<20;i++){
+            await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+            await p.waitForTimeout(800);
+          }
+          const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
+            .map(a=>a.getAttribute('href')||'')
+            .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
+            .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
+          );
+          for (const u of found) packs.add(u.replace(/\/$/,''));
+        } catch {}
+        finally { await ctx.close(); }
+      }
+    } finally { await browser.close(); }
+    return Array.from(packs);
+  }
+
+  const catLinks = await fetchCategoryPackLinks();
+  const merged = Array.from(new Set([...hubLinks, ...mapLinks, ...catLinks]));
 
   // Parse optional --max flag (default 100), allow 0 = no cap
   const extra = process.argv.slice(3);
