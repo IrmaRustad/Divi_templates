@@ -211,19 +211,38 @@ async function cmdDiscover(){
         const ctx = await browser.newContext({ viewport: { width: 1280, height: 1600 } });
         const p = await ctx.newPage();
         try{
-          await p.goto(catUrl, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 30000) });
-          try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
-          // Scroll several times to load all cards (safety cap)
-          for (let i=0;i<20;i++){
-            await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
-            await p.waitForTimeout(800);
+          let pageUrl = catUrl; let pageCount = 0;
+          while (pageUrl && pageCount < 30){
+            pageCount++;
+            await p.goto(pageUrl, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 45000) });
+            try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+            // Keep clicking "Load more" buttons if present
+            for (let i=0;i<30;i++){
+              await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+              await p.waitForTimeout(700);
+              const more = await p.locator('button:has-text("Load more"), a:has-text("Load more"), .load-more a, .et_pb_button.load_more').first();
+              if (await more.isVisible().catch(()=>false)){
+                try { await more.click({ timeout: 2000 }); await p.waitForTimeout(1000); continue; } catch {}
+              }
+              break;
+            }
+            // Collect pack links
+            const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
+              .map(a=>a.getAttribute('href')||'')
+              .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
+              .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
+            );
+            for (const u of found) packs.add(u.replace(/\/$/,''));
+            // Next page via rel=next or pagination links
+            const next = await p.evaluate(() => {
+              const rel = document.querySelector('link[rel=next]')?.getAttribute('href') || '';
+              if (rel) return rel.startsWith('http') ? rel : `https://www.elegantthemes.com${rel}`;
+              const a = Array.from(document.querySelectorAll('a[rel=next], a.next, .pagination a')).map(a=>a.getAttribute('href')||'').find(Boolean);
+              return a ? (a.startsWith('http')?a:`https://www.elegantthemes.com${a}`) : '';
+            });
+            pageUrl = next || '';
+            if (!pageUrl) break;
           }
-          const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
-            .map(a=>a.getAttribute('href')||'')
-            .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
-            .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
-          );
-          for (const u of found) packs.add(u.replace(/\/$/,''));
         } catch {}
         finally { await ctx.close(); }
       }
