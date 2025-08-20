@@ -7,106 +7,98 @@ const els = {
   counts: document.getElementById('counts'),
 };
 
-const state = {
-  data: [],
-  flat: [], // flattened pages
-  categories: [],
-  q: '',
-  cat: '',
-};
+const state = { data: [], categories: [], q: '', cat: '' };
 
-function html(strings, ...vals){
-  const s = strings.reduce((acc,cur,i)=> acc + cur + (i<vals.length?vals[i]:''), '');
-  const t = document.createElement('template');
-  t.innerHTML = s.trim();
-  return t.content.firstElementChild;
+const html = (s,...v)=>{ const t=document.createElement('template'); t.innerHTML=s.reduce((a,c,i)=>a+c+(i<v.length?v[i]:''),'').trim(); return t.content.firstElementChild; };
+const norm = s => (s||'').toLowerCase();
+
+function heroThumb(pack){
+  const pages = pack.pages||[];
+  const home = pages.find(p=>/home-page$/i.test(p.layout_slug));
+  return (home||pages[0]||{}).thumbnail || '';
 }
 
-function normalize(str){
-  return (str||'').toLowerCase();
-}
-
-function flatten(items){
-  const out = [];
-  for (const pack of items){
-    for (const page of (pack.pages||[])){
-      out.push({
-        pack_id: pack.pack_id,
-        pack_name: pack.pack_name,
-        category: pack.category,
-        page_name: page.page_name,
-        layout_slug: page.layout_slug,
-        layout_url: page.layout_url,
-        demo_url: page.demo_url,
-        thumbnail: page.thumbnail || '',
-      });
-    }
-  }
-  return out;
-}
-
-function renderCard(row){
-  const thumb = row.thumbnail || '';
+function renderPackCard(pack){
   const el = html`
-    <article class="card" data-pack="${row.pack_id}" data-cat="${row.category}">
-      <img class="thumb" loading="lazy" decoding="async" alt="${row.pack_name} – ${row.page_name}" src="${thumb}">
+    <article class="card pack" data-pack="${pack.pack_id}" data-cat="${pack.category}">
+      <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name}" src="${heroThumb(pack)}">
       <div class="meta">
-        <div class="title">${row.pack_name} · ${row.page_name}</div>
-        <div class="row small">
-          <span>${row.category}</span>
-          <span>·</span>
-          <span>${row.layout_slug}</span>
-        </div>
+        <div class="title">${pack.pack_name}</div>
+        <div class="row small"><span>${pack.category}</span><span>·</span><span>${(pack.pages||[]).length} pages</span></div>
       </div>
-      <div class="actions">
-        <a class="btn" href="${row.layout_url}" target="_blank" rel="noopener">Layout</a>
-        <a class="btn" href="${row.demo_url}" target="_blank" rel="noopener">Live Demo</a>
-        <button class="btn copy" data-url="${thumb}">Copy image URL</button>
-      </div>
+      <div class="actions"><button class="btn expand">View Pages</button></div>
+      <section class="pack-pages" hidden></section>
     </article>`;
-  el.querySelector('.copy').addEventListener('click', async (e)=>{
-    const url = e.currentTarget.dataset.url;
-    try { await navigator.clipboard.writeText(url); e.currentTarget.textContent = 'Copied!'; setTimeout(()=> e.currentTarget.textContent='Copy image URL', 1200);} catch {}
-  });
+  el.querySelector('.expand').addEventListener('click', ()=>togglePack(el, pack));
   return el;
 }
 
-function applyFilters(){
-  const q = normalize(state.q);
-  const cat = normalize(state.cat);
-  let rows = state.flat;
-  if (q){
-    rows = rows.filter(r => normalize(r.pack_name).includes(q) || normalize(r.page_name).includes(q) || normalize(r.layout_slug).includes(q));
+function renderPackPages(pack){
+  const sec = document.createElement('div');
+  sec.className = 'pages-grid';
+  for (const page of (pack.pages||[])){
+    const row = html`
+      <div class="page">
+        <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name} – ${page.page_name}" src="${page.thumbnail||''}">
+        <div class="title small">${page.page_name}</div>
+        <div class="row">
+          <a class="btn" href="${page.layout_url}" target="_blank" rel="noopener">Layout</a>
+          <a class="btn" href="${page.demo_url}" target="_blank" rel="noopener">Live Demo</a>
+        </div>
+      </div>`;
+    sec.appendChild(row);
   }
-  if (cat){ rows = rows.filter(r => normalize(r.category) === cat); }
+  return sec;
+}
+
+function togglePack(card, pack){
+  const sec = card.querySelector('.pack-pages');
+  if (!sec.hasChildNodes()) sec.appendChild(renderPackPages(pack));
+  const hidden = sec.hasAttribute('hidden');
+  if (hidden) sec.removeAttribute('hidden'); else sec.setAttribute('hidden','');
+}
+
+function applyFilters(){
+  const q = norm(state.q); const cat = norm(state.cat);
+  let packs = state.data;
+  if (q) packs = packs.filter(p => norm(p.pack_name).includes(q));
+  if (cat) packs = packs.filter(p => norm(p.category)===cat);
   els.grid.innerHTML = '';
   const frag = document.createDocumentFragment();
-  for (const row of rows){ frag.appendChild(renderCard(row)); }
+  for (const pack of packs) frag.appendChild(renderPackCard(pack));
   els.grid.appendChild(frag);
-  els.counts.textContent = `${rows.length} result(s)`;
+  els.counts.textContent = `${packs.length} pack(s)`;
+}
+
+async function downloadOffline(){
+  if (!window.JSZip){ alert('Offline download not available'); return; }
+  const btnTxt = 'Preparing…';
+  const zip = new JSZip();
+  const add = (p,blob)=> zip.file(p, blob);
+  const res = await fetch(manifestUrl); const manifest = await res.json();
+  add('manifest.json', JSON.stringify(manifest, null, 2));
+  const urls = [];
+  for (const pack of (manifest.items||[])) for (const page of (pack.pages||[])) if (page.thumbnail){ urls.push({ url: page.thumbnail, path: `thumbs/${pack.category}/${page.layout_slug}.webp` }); }
+  let done=0; els.counts.textContent = `Downloading ${urls.length} images…`;
+  for (const u of urls){
+    try{ const r = await fetch(u.url); const b = await r.blob(); add(u.path, b); } catch {}
+    done++; if (done%20===0) els.counts.textContent = `Downloading ${done}/${urls.length}…`;
+  }
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'divi_catalog_offline.zip'; a.click();
+  els.counts.textContent = `Ready · ${state.data.length} pack(s)`;
 }
 
 async function main(){
-  const res = await fetch(manifestUrl);
-  const data = await res.json();
-  state.data = data.items || [];
-  state.flat = flatten(state.data);
-  state.categories = Array.from(new Set(state.flat.map(r => r.category))).sort((a,b)=> a.localeCompare(b));
-
-  // Fill categories
-  for (const cat of state.categories){
-    const opt = document.createElement('option');
-    opt.value = cat; opt.textContent = cat; els.category.appendChild(opt);
-  }
-
-  els.search.addEventListener('input', (e)=>{ state.q = e.target.value; applyFilters(); });
-  els.category.addEventListener('change', (e)=>{ state.cat = e.target.value; applyFilters(); });
-
+  const res = await fetch(manifestUrl); const data = await res.json();
+  state.data = (data.items||[]);
+  state.categories = Array.from(new Set(state.data.map(p=>p.category))).sort((a,b)=> a.localeCompare(b));
+  for (const cat of state.categories){ const o=document.createElement('option'); o.value=cat; o.textContent=cat; els.category.appendChild(o); }
+  els.search.addEventListener('input', e=>{ state.q=e.target.value; applyFilters(); });
+  els.category.addEventListener('change', e=>{ state.cat=e.target.value; applyFilters(); });
+  const dl = document.getElementById('download-offline'); if (dl) dl.addEventListener('click', downloadOffline);
   applyFilters();
 }
 
-main().catch(err=>{
-  els.counts.textContent = 'Failed to load manifest';
-  console.error(err);
-});
+main().catch(err=>{ els.counts.textContent = 'Failed to load'; console.error(err); });
 

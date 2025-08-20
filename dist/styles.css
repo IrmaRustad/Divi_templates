@@ -18,6 +18,8 @@ body{ margin:0; font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial; bac
 .btn{ appearance:none; font:inherit; background:transparent; border:1px solid #2c3541; color:var(--text); padding:6px 10px; border-radius:6px; cursor:pointer; }
 .btn:hover{ border-color:#3a4654 }
 .actions{ padding:10px; display:flex; gap:8px; border-top:1px solid #26303b; }
+.pack-pages{ padding:10px; display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:10px; border-top:1px dashed #26303b; }
+.pages-grid .page{ display:flex; flex-direction:column; gap:6px; }
 .footer{ display:flex; gap:8px; align-items:center; justify-content:center; color:var(--muted); padding:14px; border-top:1px solid #192028; }
 .footer a{ color:var(--muted) }
 
