@@ -92,7 +92,8 @@ async function downloadOffline(){
 async function main(){
   const res = await fetch(manifestUrl); const data = await res.json();
   state.data = (data.items||[]);
-  state.categories = Array.from(new Set(state.data.map(p=>p.category))).sort((a,b)=> a.localeCompare(b));
+  const cats = state.data.map(p => p && p.category ? String(p.category) : 'uncategorized');
+  state.categories = Array.from(new Set(cats)).sort((a,b)=> String(a).localeCompare(String(b)));
   for (const cat of state.categories){ const o=document.createElement('option'); o.value=cat; o.textContent=cat; els.category.appendChild(o); }
   els.search.addEventListener('input', e=>{ state.q=e.target.value; applyFilters(); });
   els.category.addEventListener('change', e=>{ state.cat=e.target.value; applyFilters(); });
