@@ -473,20 +473,100 @@ function contrastRatio(l1,l2){
 async function cmdEnrich(){
   const discoveredPath = path.join(dataDir, 'work', 'discovered.json');
   const data = await fs.readJson(discoveredPath);
-  for (const pack of data.items){
-    // Minimal placeholder enrichment until full heuristics are implemented
-    pack.facets = {
-      background_style: 'light',
-      colorfulness: 'medium',
-      font_pair: { heading: 'Unknown', body: 'Unknown' },
-      font_mood: 'modern',
-      visual_density: 'balanced',
-      complexity: 3,
-      wcag_contrast: 'pass'
-    };
+  const sharp = (await import('sharp')).default;
+
+  function pickHeroPage(pack){
+    const pages = pack.pages||[];
+    const withThumb = pages.filter(p=>!!p.thumbnail);
+    const home = withThumb.find(p=>/home-page$/i.test(p.layout_slug||''));
+    return home || withThumb[0] || pages[0] || null;
   }
+
+  function fontMoodFromHeuristics(pack, stats){
+    const name = String(pack.pack_name||'').toLowerCase();
+    const cat = String(pack.category||'').toLowerCase();
+    const tokens = [name, cat].join(' ');
+    if (/saas|seo|digital|payments|tech|lms|software|startup/i.test(tokens)) return 'technical';
+    if (/wedding|interior|classic|law|attorney|estate|architecture/i.test(tokens)) return 'classic';
+    if (/yoga|coffee|farm|florist|fashion|photo|market|travel|studio|agency/i.test(tokens)){
+      return (stats.colorfulnessBucket === 'high') ? 'playful' : 'modern';
+    }
+    return 'modern';
+  }
+
+  function percentileFromHist(hist, total, pct){
+    const target = total * pct;
+    let acc = 0;
+    for (let i=0;i<hist.length;i++){ acc += hist[i]; if (acc >= target) return i/255; }
+    return 0;
+  }
+
+  async function computeStats(imgPath){
+    try{
+      const { data:buf, info } = await sharp(imgPath).resize(64,64, { fit:'cover' }).removeAlpha().raw().toBuffer({ resolveWithObject:true });
+      const w = info.width, h = info.height; const n = w*h; let sumL=0, sumSat=0; let sumDiff=0; const hist = new Array(256).fill(0);
+      // compute luminance, saturation, histogram, and simple gradient magnitude for density
+      const lum = new Float32Array(n);
+      for (let y=0, idx=0; y<h; y++){
+        for (let x=0; x<w; x++, idx+=3){
+          const r=buf[idx], g=buf[idx+1], b=buf[idx+2];
+          const L = luminanceFromRGB(r,g,b); lum[y*w+x]=L; sumL+=L; hist[Math.min(255, Math.max(0, Math.round(L*255)))]++;
+          sumSat += colorfulnessFromRGB(r,g,b);
+        }
+      }
+      // gradient-based density
+      for (let y=0; y<h; y++){
+        for (let x=0; x<w; x++){
+          const i=y*w+x;
+          const right = x+1<w ? lum[i+1] : lum[i];
+          const down = y+1<h ? lum[i+w] : lum[i];
+          sumDiff += Math.abs(lum[i]-right) + Math.abs(lum[i]-down);
+        }
+      }
+      const avgL = sumL/n; const avgSat = sumSat/n; const grad = sumDiff/(n*2); // ~0..1
+      const L5 = percentileFromHist(hist, n, 0.05);
+      const L95 = percentileFromHist(hist, n, 0.95);
+      const ratio = contrastRatio(L95, L5);
+      const colorfulnessBucket = bucketColorfulness(avgSat);
+      // density thresholds tuned empirically for 64x64 luminance gradients
+      let density;
+      if (grad <= 0.045) density = 'airy';
+      else if (grad >= 0.10) density = 'dense';
+      else density = 'balanced';
+      const bg = backgroundStyleFromL(avgL);
+      const wcag = ratio >= 4.5 ? 'pass' : 'warn';
+      const complexity = density === 'airy' ? 2 : density === 'dense' ? 4 : 3;
+      return { avgL, avgSat, grad, L5, L95, ratio, bg, colorfulnessBucket, density, wcag, complexity };
+    } catch (e){ return null; }
+  }
+
+  let updated=0; let missing=0;
+  for (const pack of data.items){
+    const hero = pickHeroPage(pack);
+    const rel = hero?.thumbnail||'';
+    const fp = rel && !/^https?:/i.test(rel) ? path.join(distDir, rel) : '';
+    let stats = null;
+    if (fp && await fs.pathExists(fp)){
+      stats = await computeStats(fp);
+    } else { missing++; }
+
+    if (stats){
+      const mood = fontMoodFromHeuristics(pack, stats);
+      pack.facets = {
+        background_style: stats.bg,
+        colorfulness: stats.colorfulnessBucket,
+        font_pair: { heading: 'Unknown', body: 'Unknown' },
+        font_mood: mood,
+        visual_density: stats.density,
+        complexity: stats.complexity,
+        wcag_contrast: stats.wcag
+      };
+      updated++;
+    }
+  }
+
   await fs.writeJson(discoveredPath, data, { spaces: 2 });
-  console.log('enrich: updated facets for', data.items.length, 'pack(s)');
+  console.log(`enrich: updated facets for ${updated} pack(s); missing thumbs=${missing}`);
 }
 
 async function cmdPublish(){
@@ -519,6 +599,11 @@ async function cmdPublish(){
       existing.pack_name = existing.pack_name || p.pack_name;
       existing.category = existing.category || p.category;
       if (!existing.source_post && p.source_post) existing.source_post = p.source_post;
+      // merge facets (prefer newer non-empty values)
+      if (p.facets){ existing.facets = { ...(existing.facets||{}), ...p.facets }; }
+      if (typeof p.approved === 'boolean') existing.approved = p.approved;
+      if (p.version) existing.version = existing.version || p.version;
+      if (p.notes && !existing.notes) existing.notes = p.notes;
       // merge pages by layout_slug
       existing.pages = existing.pages || [];
       for (const pg of (p.pages || [])){
