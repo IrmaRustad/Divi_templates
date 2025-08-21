@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+
+concurrency:
+  group: crawl-catalog
+  cancel-in-progress: false
+
 jobs:
   crawl:
     runs-on: ubuntu-latest
