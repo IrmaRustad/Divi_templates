@@ -1,0 +1,34 @@
+name: Crawl Divi Catalog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install deps
+        run: |
+          npm ci
+          npx playwright install --with-deps
+      - name: Discover packs/pages
+        run: npm run discover -- --max 0
+      - name: Generate thumbnails
+        run: npm run thumbs
+      - name: Publish manifest
+        run: npm run publish
+      - name: Commit and push updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist data/work || true
+          git commit -m "chore(crawl): update manifest/thumbs [skip ci]" || echo "No changes"
+          git push
+
