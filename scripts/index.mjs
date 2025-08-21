@@ -230,51 +230,6 @@ async function cmdDiscover(){
             const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
               .map(a=>a.getAttribute('href')||'')
               .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
-  // Crawl the main /layouts/ archive pages (page/2, page/3, ...) to capture any packs missed elsewhere
-  async function fetchArchivePackLinks(){
-    const packs = new Set();
-    const { chromium } = await import('playwright');
-    const browser = await chromium.launch();
-    try{
-      let pageUrl = 'https://www.elegantthemes.com/layouts/';
-      let guard = 0;
-      while(pageUrl && guard < 80){ // hard cap pages
-        guard++;
-        const ctx = await browser.newContext({ viewport: { width: 1280, height: 1600 } });
-        const p = await ctx.newPage();
-        try{
-          await p.goto(pageUrl, { waitUntil: 'networkidle', timeout: Math.max(cfg.timeouts.navMs, 45000) });
-          try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
-          // Scroll and load more if present
-          for (let i=0;i<40;i++){
-            await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
-            await p.waitForTimeout(600);
-            const more = await p.locator('button:has-text("Load more"), a:has-text("Load more"), .load-more a, .et_pb_button.load_more').first();
-            if (await more.isVisible().catch(()=>false)){
-              try { await more.click({ timeout: 1500 }); await p.waitForTimeout(1000); continue; } catch {}
-            }
-            break;
-          }
-          const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
-            .map(a=>a.getAttribute('href')||'')
-            .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
-            .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
-          );
-          for (const u of found) packs.add(u.replace(/\/$/,''));
-          const next = await p.evaluate(() => {
-            const rel = document.querySelector('link[rel=next]')?.getAttribute('href') || '';
-            if (rel) return rel.startsWith('http') ? rel : `https://www.elegantthemes.com${rel}`;
-            const a = Array.from(document.querySelectorAll('a[rel=next], a.next, .pagination a')).map(a=>a.getAttribute('href')||'').find(Boolean);
-            return a ? (a.startsWith('http')?a:`https://www.elegantthemes.com${a}`) : '';
-          });
-          pageUrl = next || '';
-        } catch {}
-        finally { await ctx.close(); }
-      }
-    } finally { try{ await browser.close(); } catch {} }
-    return Array.from(packs);
-  }
-
               .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
             );
             for (const u of found) packs.add(u.replace(/\/$/,''));
@@ -296,8 +251,7 @@ async function cmdDiscover(){
   }
 
   const catLinks = await fetchCategoryPackLinks();
-  const archLinks = await fetchArchivePackLinks();
-  const merged = Array.from(new Set([...hubLinks, ...mapLinks, ...catLinks, ...archLinks]));
+  const merged = Array.from(new Set([...hubLinks, ...mapLinks, ...catLinks]));
 
   // Parse optional --max flag (default 100), allow 0 = no cap
   const extra = process.argv.slice(3);
