@@ -31,6 +31,8 @@ jobs:
           npx playwright install --with-deps
       - name: Discover packs/pages
         run: npm run discover -- --max 0
+      - name: Enrich facets
+        run: npm run enrich
       - name: Generate thumbnails
         run: npm run thumbs
       - name: Publish manifest
