@@ -1,8 +1,8 @@
 {
   "schema": "1.2",
-  "generated_at": "2025-08-17T08:20:36.385Z",
+  "generated_at": "2025-08-21T08:34:43.977Z",
   "source": {
-    "crawl_version": "2025.08.17",
+    "crawl_version": "2025.08.21",
     "seeds": [
       "blog-packs",
       "layout-pages"
@@ -19,12 +19,41 @@
           "layout_slug": "agency",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/agency/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/agency"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "agency-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-about-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "agency-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-contact-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "agency-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-home-page.webp"
+        },
+        {
+          "page_name": "Portfolio",
+          "layout_slug": "agency-portfolio-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-portfolio-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-portfolio-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-portfolio-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "restaurant",
@@ -36,12 +65,41 @@
           "layout_slug": "restaurant",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/restaurant/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/restaurant"
+        },
+        {
+          "page_name": "Team",
+          "layout_slug": "restaurant-team-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-team-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-team-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-team-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "restaurant-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-about-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "restaurant-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-contact-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "restaurant-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-home-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "learning-management-lms",
@@ -70,12 +128,41 @@
           "layout_slug": "design-agency",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/design-agency/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/design-agency"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "design-agency-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-contact-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "design-agency-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-home-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "design-agency-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-about-page.webp"
+        },
+        {
+          "page_name": "Portfolio",
+          "layout_slug": "design-agency-portfolio-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-portfolio-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-portfolio-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-portfolio-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "fashion",
@@ -87,12 +174,34 @@
           "layout_slug": "fashion",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/fashion/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/fashion"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "fashion-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "fashion-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-about-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "fashion-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-home-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "coffee-shop",
@@ -104,12 +213,34 @@
           "layout_slug": "coffee-shop",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/coffee-shop/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/coffee-shop"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "coffee-shop-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-contact-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "coffee-shop-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-home-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "coffee-shop-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "farmers-market",
@@ -121,12 +252,34 @@
           "layout_slug": "farmers-market",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/farmers-market/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/farmers-market"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "farmers-market-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-home-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "farmers-market-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-about-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "farmers-market-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-contact-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "yoga-studio",
@@ -138,12 +291,41 @@
           "layout_slug": "yoga-studio",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/yoga-studio/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/yoga-studio"
+        },
+        {
+          "page_name": "Team",
+          "layout_slug": "yoga-studio-team-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-team-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-team-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-team-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "yoga-studio-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "yoga-studio-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "yoga-studio-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "wedding",
@@ -155,12 +337,34 @@
           "layout_slug": "wedding",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/wedding/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/wedding"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "wedding-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-contact-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "wedding-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-home-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "wedding-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "travel-agency",
@@ -172,12 +376,41 @@
           "layout_slug": "travel-agency",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/travel-agency/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/travel-agency"
+        },
+        {
+          "page_name": "Team",
+          "layout_slug": "travel-agency-team-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-team-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-team-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-team-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "travel-agency-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "travel-agency-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "travel-agency-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "photo-marketplace",
@@ -189,12 +422,34 @@
           "layout_slug": "photo-marketplace",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/photo-marketplace/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/photo-marketplace"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "photo-marketplace-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-home-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "photo-marketplace-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-about-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "photo-marketplace-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-contact-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "copywriter",
@@ -206,12 +461,48 @@
           "layout_slug": "copywriter",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/copywriter/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/copywriter"
+        },
+        {
+          "page_name": "Services",
+          "layout_slug": "copywriter-services-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-services-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-services-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-services-page.webp"
+        },
+        {
+          "page_name": "Portfolio",
+          "layout_slug": "copywriter-portfolio-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-portfolio-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-portfolio-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-portfolio-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "copywriter-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "copywriter-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "copywriter-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "florist",
@@ -223,12 +514,34 @@
           "layout_slug": "florist",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/florist/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/florist"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "florist-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "florist-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "florist-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "saas-company",
@@ -240,12 +553,27 @@
           "layout_slug": "saas-company",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/saas-company/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/saas-company"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "saas-company-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "saas-company-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "web-agency",
@@ -257,12 +585,41 @@
           "layout_slug": "web-agency",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/web-agency/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/web-agency"
+        },
+        {
+          "page_name": "Services",
+          "layout_slug": "web-agency-services-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-services-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-services-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-services-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "web-agency-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-contact-page.webp"
+        },
+        {
+          "page_name": "Portfolio",
+          "layout_slug": "web-agency-portfolio-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-portfolio-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-portfolio-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-portfolio-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "web-agency-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-home-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "interior-design-company",
@@ -274,12 +631,48 @@
           "layout_slug": "interior-design-company",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/interior-design-company/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/interior-design-company"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "interior-design-company-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-contact-page.webp"
+        },
+        {
+          "page_name": "Services",
+          "layout_slug": "interior-design-company-services-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-services-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-services-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-services-page.webp"
+        },
+        {
+          "page_name": "Portfolio",
+          "layout_slug": "interior-design-company-portfolio-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-portfolio-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-portfolio-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-portfolio-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "interior-design-company-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-about-page.webp"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "interior-design-company-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-home-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "digital-payments",
@@ -291,12 +684,34 @@
           "layout_slug": "digital-payments",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/digital-payments/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/digital-payments"
+        },
+        {
+          "page_name": "Home",
+          "layout_slug": "digital-payments-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "digital-payments-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "digital-payments-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-about-page.webp"
         }
       ],
       "facets": {},
       "approved": true,
       "version": "1.0.0",
-      "notes": ""
+      "notes": "",
+      "source_post": "https://www.elegantthemes.com/layouts/"
     },
     {
       "pack_id": "seo-agency",
@@ -308,6 +723,1388 @@
           "layout_slug": "seo-agency",
           "demo_url": "https://www.elegantthemes.com/layouts/pack/seo-agency/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/pack/seo-agency"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "restaurant-shop-page",
+      "pack_name": "Restaurant Shop Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "restaurant-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "restaurant-blog-page",
+      "pack_name": "Restaurant Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "restaurant-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "restaurant-gallery-page",
+      "pack_name": "Restaurant Gallery Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Gallery",
+          "layout_slug": "restaurant-gallery-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-gallery-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-gallery-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-gallery-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "restaurant-landing-page",
+      "pack_name": "Restaurant Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "restaurant-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/restaurant-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/restaurant-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/restaurant-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "agency-pricing-page",
+      "pack_name": "Agency Pricing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "agency-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "agency-blog-page",
+      "pack_name": "Agency Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "agency-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "agency-landing-page",
+      "pack_name": "Agency Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "agency-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/agency-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/agency-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/agency-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-pricing-page",
+      "pack_name": "Lms Pricing Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "lms-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-marketing-page",
+      "pack_name": "Lms Marketing Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Marketing",
+          "layout_slug": "lms-marketing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-marketing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-marketing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-marketing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-landing-page",
+      "pack_name": "Lms Landing Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "lms-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms",
+      "pack_name": "Lms",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Home",
+          "layout_slug": "lms-home-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-home-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-home-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-home-page.webp"
+        },
+        {
+          "page_name": "Contact",
+          "layout_slug": "lms-contact-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-contact-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-contact-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-contact-page.webp"
+        },
+        {
+          "page_name": "About",
+          "layout_slug": "lms-about-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-about-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-about-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-about-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-courses-page",
+      "pack_name": "Lms Courses Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Courses",
+          "layout_slug": "lms-courses-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-courses-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-courses-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-courses-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-course-page",
+      "pack_name": "Lms Course Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Course",
+          "layout_slug": "lms-course-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-course-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-course-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-course-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "lms-blog-page",
+      "pack_name": "Lms Blog Page",
+      "category": "education",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "lms-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/education/lms-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/education/lms-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/lms-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "design-agency-project-page",
+      "pack_name": "Design Agency Project Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Project",
+          "layout_slug": "design-agency-project-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-project-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-project-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-project-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "design-agency-landing-page",
+      "pack_name": "Design Agency Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "design-agency-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "design-agency-case-study-page",
+      "pack_name": "Design Agency Case Study Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Study",
+          "layout_slug": "design-agency-case-study-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-case-study-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-case-study-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-case-study-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "design-agency-blog-page",
+      "pack_name": "Design Agency Blog Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "design-agency-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/design-agency-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/design-agency-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion-designer-page",
+      "pack_name": "Fashion Designer Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Designer",
+          "layout_slug": "fashion-designer-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-designer-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-designer-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-designer-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion-gallery-page",
+      "pack_name": "Fashion Gallery Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Gallery",
+          "layout_slug": "fashion-gallery-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-gallery-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-gallery-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-gallery-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion-blog-page",
+      "pack_name": "Fashion Blog Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "fashion-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion-shop-page",
+      "pack_name": "Fashion Shop Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "fashion-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "fashion-landing-page",
+      "pack_name": "Fashion Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "fashion-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/fashion-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/fashion-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/fashion-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop-shop-page",
+      "pack_name": "Coffee Shop Shop Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "coffee-shop-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop-menu-page",
+      "pack_name": "Coffee Shop Menu Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Menu",
+          "layout_slug": "coffee-shop-menu-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-menu-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-menu-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-menu-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop-landing-page",
+      "pack_name": "Coffee Shop Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "coffee-shop-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop-guide-page",
+      "pack_name": "Coffee Shop Guide Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Guide",
+          "layout_slug": "coffee-shop-guide-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-guide-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-guide-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-guide-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "coffee-shop-blog-page",
+      "pack_name": "Coffee Shop Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "coffee-shop-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/coffee-shop-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/coffee-shop-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market-landing-page",
+      "pack_name": "Farmers Market Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "farmers-market-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market-donate-page",
+      "pack_name": "Farmers Market Donate Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Donate",
+          "layout_slug": "farmers-market-donate-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-donate-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-donate-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-donate-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market-events-page",
+      "pack_name": "Farmers Market Events Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Events",
+          "layout_slug": "farmers-market-events-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-events-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-events-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-events-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market-market-page",
+      "pack_name": "Farmers Market Market Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Market",
+          "layout_slug": "farmers-market-market-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-market-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-market-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-market-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "farmers-market-blog-page",
+      "pack_name": "Farmers Market Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "farmers-market-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/farmers-market-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/farmers-market-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/farmers-market-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "yoga-studio-landing-page",
+      "pack_name": "Yoga Studio Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "yoga-studio-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "yoga-studio-classes-page",
+      "pack_name": "Yoga Studio Classes Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Classes",
+          "layout_slug": "yoga-studio-classes-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-classes-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-classes-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-classes-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "yoga-studio-blog-page",
+      "pack_name": "Yoga Studio Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "yoga-studio-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/yoga-studio-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/yoga-studio-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "wedding-blog-page",
+      "pack_name": "Wedding Blog Page",
+      "category": "events",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "wedding-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "wedding-details-page",
+      "pack_name": "Wedding Details Page",
+      "category": "events",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Details",
+          "layout_slug": "wedding-details-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-details-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-details-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-details-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "wedding-gallery-page",
+      "pack_name": "Wedding Gallery Page",
+      "category": "events",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Gallery",
+          "layout_slug": "wedding-gallery-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/events/wedding-gallery-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/events/wedding-gallery-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/events/wedding-gallery-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "travel-agency-shop-page",
+      "pack_name": "Travel Agency Shop Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "travel-agency-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "travel-agency-blog-page",
+      "pack_name": "Travel Agency Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "travel-agency-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "travel-agency-packages-page",
+      "pack_name": "Travel Agency Packages Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Packages",
+          "layout_slug": "travel-agency-packages-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-packages-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-packages-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-packages-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "travel-agency-landing-page",
+      "pack_name": "Travel Agency Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "travel-agency-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/travel-agency-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/travel-agency-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/travel-agency-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "photo-marketplace-pricing-page",
+      "pack_name": "Photo Marketplace Pricing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "photo-marketplace-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "photo-marketplace-landing-page",
+      "pack_name": "Photo Marketplace Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "photo-marketplace-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "photo-marketplace-seller-page",
+      "pack_name": "Photo Marketplace Seller Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Seller",
+          "layout_slug": "photo-marketplace-seller-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-seller-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-seller-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-seller-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "photo-marketplace-categories-page",
+      "pack_name": "Photo Marketplace Categories Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Categories",
+          "layout_slug": "photo-marketplace-categories-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-categories-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/photo-marketplace-categories-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/photo-marketplace-categories-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "copywriter-pricing-page",
+      "pack_name": "Copywriter Pricing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "copywriter-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "copywriter-landing-page",
+      "pack_name": "Copywriter Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "copywriter-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "copywriter-faq-page",
+      "pack_name": "Copywriter Faq Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Faq",
+          "layout_slug": "copywriter-faq-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-faq-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-faq-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-faq-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "copywriter-blog-page",
+      "pack_name": "Copywriter Blog Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "copywriter-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/copywriter-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/copywriter-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "florist-shop-page",
+      "pack_name": "Florist Shop Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "florist-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "florist-gallery-page",
+      "pack_name": "Florist Gallery Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Gallery",
+          "layout_slug": "florist-gallery-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-gallery-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-gallery-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-gallery-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "florist-landing-page",
+      "pack_name": "Florist Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "florist-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "florist-blog-page",
+      "pack_name": "Florist Blog Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "florist-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/florist-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/florist-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/florist-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company-careers-page",
+      "pack_name": "Saas Company Careers Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Careers",
+          "layout_slug": "saas-company-careers-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-careers-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-careers-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-careers-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company-documentation-page",
+      "pack_name": "Saas Company Documentation Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Documentation",
+          "layout_slug": "saas-company-documentation-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-documentation-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-documentation-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-documentation-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company-pricing-page",
+      "pack_name": "Saas Company Pricing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "saas-company-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company-features-page",
+      "pack_name": "Saas Company Features Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Features",
+          "layout_slug": "saas-company-features-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-features-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-features-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-features-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "saas-company-landing-page",
+      "pack_name": "Saas Company Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "saas-company-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/saas-company-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/saas-company-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/saas-company-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "web-agency-landing-page",
+      "pack_name": "Web Agency Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "web-agency-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "web-agency-pricing-page",
+      "pack_name": "Web Agency Pricing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "web-agency-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "web-agency-careers-page",
+      "pack_name": "Web Agency Careers Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Careers",
+          "layout_slug": "web-agency-careers-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-careers-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/web-agency-careers-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/web-agency-careers-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "interior-design-company-shop-page",
+      "pack_name": "Interior Design Company Shop Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Shop",
+          "layout_slug": "interior-design-company-shop-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-shop-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-shop-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-shop-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "interior-design-company-landing-page",
+      "pack_name": "Interior Design Company Landing Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "interior-design-company-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "interior-design-company-blog-page",
+      "pack_name": "Interior Design Company Blog Page",
+      "category": "art-design",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "interior-design-company-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/art-design/interior-design-company-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/art-design/interior-design-company-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments-sign-up-page",
+      "pack_name": "Digital Payments Sign Up Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Up",
+          "layout_slug": "digital-payments-sign-up-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-sign-up-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-sign-up-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-sign-up-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments-pricing-page",
+      "pack_name": "Digital Payments Pricing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Pricing",
+          "layout_slug": "digital-payments-pricing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-pricing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-pricing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-pricing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments-features-page",
+      "pack_name": "Digital Payments Features Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Features",
+          "layout_slug": "digital-payments-features-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-features-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-features-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-features-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments-landing-page",
+      "pack_name": "Digital Payments Landing Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Landing",
+          "layout_slug": "digital-payments-landing-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-landing-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-landing-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-landing-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "digital-payments-blog-page",
+      "pack_name": "Digital Payments Blog Page",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Blog",
+          "layout_slug": "digital-payments-blog-page",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/digital-payments-blog-page/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/digital-payments-blog-page",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/digital-payments-blog-page.webp"
+        }
+      ],
+      "facets": {},
+      "approved": true,
+      "version": "1.0.0",
+      "notes": ""
+    },
+    {
+      "pack_id": "seo-landing",
+      "pack_name": "Seo Landing",
+      "category": "business",
+      "source_post": "https://www.elegantthemes.com/layouts/",
+      "pages": [
+        {
+          "page_name": "Page",
+          "layout_slug": "seo-landing",
+          "demo_url": "https://www.elegantthemes.com/layouts/business/seo-landing/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/business/seo-landing",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/business/seo-landing.webp"
         }
       ],
       "facets": {},
