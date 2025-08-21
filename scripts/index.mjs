@@ -274,7 +274,7 @@ async function cmdDiscover(){
       const parts = u.pathname.split('/').filter(Boolean);
       const category = parts[1];
       const layoutSlug = parts[2];
-      const packBase = layoutSlug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
+      const packBase = layoutSlug.replace(/-(.+)-page$/, '');
       const packId = packBase;
       const packName = titleCaseFromSlug(packBase);
 
@@ -315,7 +315,7 @@ async function cmdDiscover(){
         const segs = slug.split('-');
         let pageName = 'Page';
         if (segs.length >= 2 && segs[segs.length-1] === 'page'){ pageName = segs[segs.length-2]; }
-        const packBase2 = slug.replace(/-(home|about|contact|team|services|portfolio)-page$/, '');
+        const packBase2 = slug.replace(/-(.+)-page$/, '');
         const pid = packBase2;
         const pname = titleCaseFromSlug(packBase2);
         let pack = packsById.get(pid);
