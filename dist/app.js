@@ -4,10 +4,21 @@ const els = {
   grid: document.getElementById('grid'),
   search: document.getElementById('search'),
   category: document.getElementById('category'),
+  types: document.getElementById('types'),
   counts: document.getElementById('counts'),
+  facetBg: document.getElementById('facet-bg'),
+  facetColor: document.getElementById('facet-color'),
+  facetMood: document.getElementById('facet-mood'),
+  facetDensity: document.getElementById('facet-density'),
+  facetContrast: document.getElementById('facet-contrast'),
+  minPages: document.getElementById('min-pages'),
+  approvedOnly: document.getElementById('approved-only'),
+  hasThumb: document.getElementById('has-thumb'),
 };
 
-const state = { data: [], categories: [], q: '', cat: '' };
+const state = { data: [], categories: [], q: '', cat: '', types: new Set(),
+  filters: { bg:'', color:'', mood:'', density:'', contrast:'', minPages:0, approvedOnly:false, hasThumb:false }
+};
 
 const html = (s,...v)=>{ const t=document.createElement('template'); t.innerHTML=s.reduce((a,c,i)=>a+c+(i<v.length?v[i]:''),'').trim(); return t.content.firstElementChild; };
 const norm = s => (s||'').toLowerCase();
@@ -68,14 +79,40 @@ function togglePack(card, pack){
 
 function applyFilters(){
   const q = norm(state.q); const cat = norm(state.cat);
+  const types = state.types;
+  const f = state.filters;
   let packs = state.data;
-  if (q) packs = packs.filter(p => norm(p.pack_name).includes(q));
+  if (q) packs = packs.filter(p => norm(p.pack_name).includes(q) || norm(p.category).includes(q));
   if (cat) packs = packs.filter(p => norm(p.category)===cat);
+  if (types && types.size){
+    packs = packs.filter(p => {
+      const slugs = new Set((p.pages||[]).map(pg=>String(pg.layout_slug||'')));
+      for (const t of types){ if ([...slugs].some(s=> new RegExp(`-${t}-page$`).test(s))) return true; }
+      return false;
+    });
+  }
+  // facet filters (pack.facets)
+  packs = packs.filter(p => {
+    const fac = p.facets||{};
+    if (f.bg && fac.background_style !== f.bg) return false;
+    if (f.color && fac.colorfulness !== f.color) return false;
+    if (f.mood && fac.font_mood !== f.mood) return false;
+    if (f.density && fac.visual_density !== f.density) return false;
+    if (f.contrast && fac.wcag_contrast !== f.contrast) return false;
+    if (f.approvedOnly && p.approved !== true) return false;
+    if (f.minPages && (p.pages||[]).length < Number(f.minPages||0)) return false;
+    if (f.hasThumb){
+      const has = (p.pages||[]).some(pg => !!pg.thumbnail);
+      if (!has) return false;
+    }
+    return true;
+  });
   els.grid.innerHTML = '';
   const frag = document.createDocumentFragment();
   for (const pack of packs) frag.appendChild(renderPackCard(pack));
   els.grid.appendChild(frag);
-  els.counts.textContent = `${packs.length} pack(s)`;
+  const pageCount = packs.reduce((a,p)=>a+(p.pages||[]).length,0);
+  els.counts.textContent = `${packs.length} pack(s) · ${pageCount} page(s)`;
 }
 
 async function downloadOffline(){
@@ -96,6 +133,28 @@ async function downloadOffline(){
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'divi_catalog_offline.zip'; a.click();
   els.counts.textContent = `Ready · ${state.data.length} pack(s)`;
 }
+  // Build quick page-type chips from slugs present across all packs
+  const allTypes = new Set();
+  for (const pack of state.data){
+    for (const page of (pack.pages||[])){
+      const m = /-([a-z0-9]+)-page$/i.exec(page.layout_slug||'');
+      if (m && m[1]) allTypes.add(m[1]);
+    }
+  }
+  const types = Array.from(allTypes).sort();
+  for (const t of types){
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.type = 'button';
+    chip.textContent = t;
+    chip.addEventListener('click', ()=>{
+      if (state.types.has(t)) state.types.delete(t); else state.types.add(t);
+      chip.classList.toggle('active');
+      applyFilters();
+    });
+    els.types.appendChild(chip);
+  }
+
 
 async function main(){
   const res = await fetch(manifestUrl); const data = await res.json();
@@ -103,8 +162,31 @@ async function main(){
   const cats = state.data.map(p => p && p.category ? String(p.category) : 'uncategorized');
   state.categories = Array.from(new Set(cats)).sort((a,b)=> String(a).localeCompare(String(b)));
   for (const cat of state.categories){ const o=document.createElement('option'); o.value=cat; o.textContent=cat; els.category.appendChild(o); }
+  // populate facet selects from schema enums
+  const enums = {
+    bg: ['light','dark','colorful'],
+    color: ['low','medium','high'],
+    mood: ['modern','classic','playful','technical'],
+    density: ['airy','balanced','dense'],
+    contrast: ['pass','warn']
+  };
+  function fillSelect(sel, arr){ if(!sel) return; for(const v of arr){ const o=document.createElement('option'); o.value=v; o.textContent=`${v}`; sel.appendChild(o);} }
+  fillSelect(els.facetBg, enums.bg);
+  fillSelect(els.facetColor, enums.color);
+  fillSelect(els.facetMood, enums.mood);
+  fillSelect(els.facetDensity, enums.density);
+  fillSelect(els.facetContrast, enums.contrast);
   els.search.addEventListener('input', e=>{ state.q=e.target.value; applyFilters(); });
   els.category.addEventListener('change', e=>{ state.cat=e.target.value; applyFilters(); });
+  // facet listeners
+  if (els.facetBg) els.facetBg.addEventListener('change', e=>{ state.filters.bg=e.target.value; applyFilters(); });
+  if (els.facetColor) els.facetColor.addEventListener('change', e=>{ state.filters.color=e.target.value; applyFilters(); });
+  if (els.facetMood) els.facetMood.addEventListener('change', e=>{ state.filters.mood=e.target.value; applyFilters(); });
+  if (els.facetDensity) els.facetDensity.addEventListener('change', e=>{ state.filters.density=e.target.value; applyFilters(); });
+  if (els.facetContrast) els.facetContrast.addEventListener('change', e=>{ state.filters.contrast=e.target.value; applyFilters(); });
+  if (els.minPages) els.minPages.addEventListener('input', e=>{ state.filters.minPages=parseInt(e.target.value||'0',10)||0; applyFilters(); });
+  if (els.approvedOnly) els.approvedOnly.addEventListener('change', e=>{ state.filters.approvedOnly=!!e.target.checked; applyFilters(); });
+  if (els.hasThumb) els.hasThumb.addEventListener('change', e=>{ state.filters.hasThumb=!!e.target.checked; applyFilters(); });
   const dl = document.getElementById('download-offline'); if (dl) dl.addEventListener('click', downloadOffline);
   applyFilters();
 }

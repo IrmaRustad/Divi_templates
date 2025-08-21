@@ -48,6 +48,9 @@ while(true){
   code = await run(npmBin, ['run','thumbs']);
   if (code !== 0){ await append(`thumbs failed with code ${code}`); await sleep(30000); continue; }
 
+code = await run(npmBin, ['run','enrich']);
+if (code !== 0){ await append(`enrich failed with code ${code}`); await sleep(30000); continue; }
+
   code = await run(npmBin, ['run','publish']);
   if (code !== 0){ await append(`publish failed with code ${code}`); await sleep(30000); continue; }
 
