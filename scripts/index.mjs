@@ -409,7 +409,7 @@ async function cmdThumbs(){
         // 0) If already exists, skip (idempotent)
         if (await fs.pathExists(outPath)){
           page.thumbnail = `thumbs/${pack.category}/${page.layout_slug}.webp`;
-          if (!pack.source_post) pack.source_post = 'https://www.elegthemes.com/layouts/';
+          if (!pack.source_post) pack.source_post = 'https://www.elegantthemes.com/layouts/';
           console.log(`thumbs: exists ${outPath} (skip)`);
           continue;
         }

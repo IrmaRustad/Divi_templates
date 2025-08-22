@@ -37,6 +37,31 @@ jobs:
         run: npm run thumbs
       - name: Publish manifest
         run: npm run publish
+      - name: Validate manifest
+        run: npm run validate
+      - name: Guard minimum count (full run)
+        shell: bash
+        run: |
+          COUNT=$(node -e "console.log(require('./dist/manifest.json').items.length)")
+          echo "Items in manifest: $COUNT"
+          if [ "$COUNT" -lt 300 ]; then
+            echo "Count too low (<300). Failing the job to surface the issue." >&2
+            exit 1
+          fi
+      - name: Upload discovered.json (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovered-json
+          path: data/work/discovered.json
+          if-no-files-found: error
+          retention-days: 3
+      - name: Job summary
+        shell: bash
+        run: |
+          echo "### Crawl Summary" >> $GITHUB_STEP_SUMMARY
+          COUNT=$(node -e "console.log(require('./dist/manifest.json').items.length)")
+          echo "- Items in manifest: $COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Manifest: https://raw.githubusercontent.com/${{ github.repository }}/main/dist/manifest.json" >> $GITHUB_STEP_SUMMARY
       - name: Commit and push updates
         run: |
           git config user.name "github-actions[bot]"
