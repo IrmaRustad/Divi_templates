@@ -238,7 +238,7 @@ async function cmdDiscover(){
             // Collect pack links
             const found = await p.evaluate(() => Array.from(document.querySelectorAll('a[href^="/layouts/"]'))
               .map(a=>a.getAttribute('href')||'')
-              .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3 && !/-page$/.test(parts[2]); })
+              .filter(h=>{ const parts=h.split('/').filter(Boolean); return parts[0]==='layouts' && parts.length>=3; })
               .map(h=> h.startsWith('http')?h:`https://www.elegantthemes.com${h}`)
             );
             for (const u of found) packs.add(u.replace(/\/$/,''));
@@ -280,9 +280,10 @@ async function cmdDiscover(){
           const before = links.size;
           for (const u of found) links.add(u.replace(/\/$/,''));
           const gained = links.size - before;
-          if (gained === 0 && i>5) break; // stop if no new links after a few pages
+          // continue scanning all pages; some pages may duplicate links intermittently
+          // do not early-break on first zero-gain page to avoid plateauing around ~100
         } catch {
-          if (i>5) break;
+          // swallow and continue to next page
         }
       }
       await ctx.close();
@@ -315,7 +316,7 @@ async function cmdDiscover(){
       const parts = u.pathname.split('/').filter(Boolean);
       const category = parts[1];
       const layoutSlug = parts[2];
-      const packBase = layoutSlug.replace(/-(.+)-page$/, '');
+      const packBase = layoutSlug.replace(/-[^-]+-page$/, '');
       const packId = packBase;
       const packName = titleCaseFromSlug(packBase);
 
@@ -336,13 +337,24 @@ async function cmdDiscover(){
             .filter(Boolean)
             .map(h => abs(h.replace(/#.*$/,'')));
           const slug = (packHref.split('/').filter(Boolean)[2] || '').replace(/\/$/,'');
-          const wanted = all.filter(u => /\/layouts\//.test(u) && /-page\/?$/.test(u) && u.includes(`/${slug.split('-')[0]}`) );
+          const packBase = slug.replace(/-[^-]+-page$/,'');
+          const wanted = all.filter(u => {
+            const m = u.match(/\/layouts\/[^/]+\/([a-z0-9-]+)\/?$/i);
+            if (!m) return false;
+            const s = m[1];
+            return /-page$/.test(s) && (s.startsWith(`${packBase}-`) || s === `${packBase}-page`);
+          });
           // Also include any data-permalink attributes present on cards
           const dataPermas = Array.from(document.querySelectorAll('[data-permalink]'))
             .map(el => el.getAttribute('data-permalink')||'')
             .filter(Boolean)
             .map(abs)
-            .filter(u => /\/layouts\//.test(u) && /-page\/?$/.test(u));
+            .filter(u => {
+              const m = u.match(/\/layouts\/[^/]+\/([a-z0-9-]+)\/?$/i);
+              if (!m) return false;
+              const s = m[1];
+              return /-page$/.test(s) && (s.startsWith(`${packBase}-`) || s === `${packBase}-page`);
+            });
           const urls = Array.from(new Set([...wanted, ...dataPermas])).map(u => u.replace(/\/$/,''));
           return urls.length ? urls : [location.href.replace(/\/$/,'')];
         }, link);
@@ -357,7 +369,7 @@ async function cmdDiscover(){
         const segs = slug.split('-');
         let pageName = 'Page';
         if (segs.length >= 2 && segs[segs.length-1] === 'page'){ pageName = segs[segs.length-2]; }
-        const packBase2 = slug.replace(/-(.+)-page$/, '');
+        const packBase2 = slug.replace(/-[^-]+-page$/, '');
         const pid = packBase2;
         const pname = titleCaseFromSlug(packBase2);
         let pack = packsById.get(pid);
