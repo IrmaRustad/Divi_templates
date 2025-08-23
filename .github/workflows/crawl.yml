@@ -49,6 +49,7 @@ jobs:
             exit 1
           fi
       - name: Upload discovered.json (artifact)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: discovered-json
@@ -56,6 +57,7 @@ jobs:
           if-no-files-found: error
           retention-days: 3
       - name: Job summary
+        if: always()
         shell: bash
         run: |
           echo "### Crawl Summary" >> $GITHUB_STEP_SUMMARY
