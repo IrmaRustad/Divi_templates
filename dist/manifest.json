@@ -1,8 +1,8 @@
 {
   "schema": "1.2",
-  "generated_at": "2025-08-22T22:48:04.312Z",
+  "generated_at": "2025-08-23T02:09:24.103Z",
   "source": {
-    "crawl_version": "2025.08.22",
+    "crawl_version": "2025.08.23",
     "seeds": [
       "blog-packs",
       "layout-pages"
