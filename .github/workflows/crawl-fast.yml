@@ -1,0 +1,71 @@
+name: Crawl Divi Catalog (Fast)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crawl-catalog-fast
+  cancel-in-progress: true
+
+jobs:
+  crawl_fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install deps
+        run: |
+          npm ci
+          npx playwright install --with-deps
+      - name: Discover packs/pages (no cap)
+        run: npm run discover -- --max 0
+      - name: Publish manifest
+        run: npm run publish
+      - name: Validate manifest
+        run: npm run validate
+      - name: Guard minimum count (fast run)
+        shell: bash
+        run: |
+          COUNT=$(node -e "console.log(require('./dist/manifest.json').items.length)")
+          echo "Items in manifest: $COUNT"
+          if [ "$COUNT" -lt 300 ]; then
+            echo "Count too low (<300). Failing the job to surface the issue." >&2
+            exit 1
+          fi
+      - name: Upload discovered.json (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovered-json
+          path: data/work/discovered.json
+          if-no-files-found: error
+          retention-days: 3
+      - name: Job summary
+        if: always()
+        shell: bash
+        run: |
+          echo "### Crawl Summary (Fast)" >> $GITHUB_STEP_SUMMARY
+          COUNT=$(node -e "console.log(require('./dist/manifest.json').items.length)")
+          echo "- Items in manifest: $COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Manifest: https://raw.githubusercontent.com/${{ github.repository }}/main/dist/manifest.json" >> $GITHUB_STEP_SUMMARY
+      - name: Commit and push updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist data/work || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(crawl-fast): publish manifest [skip ci]"
+            git push
+          fi
+
