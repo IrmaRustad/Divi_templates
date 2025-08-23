@@ -65,7 +65,9 @@ jobs:
           echo "- Items in manifest: $COUNT" >> $GITHUB_STEP_SUMMARY
           echo "- Manifest: https://raw.githubusercontent.com/${{ github.repository }}/main/dist/manifest.json" >> $GITHUB_STEP_SUMMARY
       - name: Commit and push updates
+        shell: bash
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add dist data/work || true
@@ -73,6 +75,18 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore(crawl): update manifest/thumbs [skip ci]"
-            git push
+            # Rebase onto origin/main to avoid non-fast-forward push failures when other commits landed during the long run
+            git fetch origin main
+            git pull --rebase origin main || (git rebase --abort || true)
+            # Retry push up to 2 times after rebase
+            for i in 1 2; do
+              if git push; then
+                echo "Push succeeded"; break
+              else
+                echo "Push failed, retry $i after rebase..." >&2
+                git fetch origin main
+                git pull --rebase origin main || (git rebase --abort || true)
+              fi
+            done
           fi
 
