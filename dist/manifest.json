@@ -1,6 +1,6 @@
 {
   "schema": "1.2",
-  "generated_at": "2025-08-24T09:11:28.327Z",
+  "generated_at": "2025-08-24T12:33:43.243Z",
   "source": {
     "crawl_version": "2025.08.24",
     "seeds": [
@@ -8293,6 +8293,13 @@
           "demo_url": "https://www.elegantthemes.com/layouts/education/learning-management-system-landing-page/live-demo",
           "layout_url": "https://www.elegantthemes.com/layouts/education/learning-management-system-landing-page",
           "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/education/learning-management-system-landing-page.webp"
+        },
+        {
+          "page_name": "Page",
+          "layout_slug": "learning-management-system",
+          "demo_url": "https://www.elegantthemes.com/layouts/pack/learning-management-system/live-demo",
+          "layout_url": "https://www.elegantthemes.com/layouts/pack/learning-management-system",
+          "thumbnail": "https://irmarustad.github.io/Divi_templates/thumbs/pack/learning-management-system.webp"
         }
       ],
       "facets": {},
