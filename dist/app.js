@@ -23,6 +23,7 @@ const state = { data: [], categories: [], q: '', cat: '', types: new Set(),
 const html = (s,...v)=>{ const t=document.createElement('template'); t.innerHTML=s.reduce((a,c,i)=>a+c+(i<v.length?v[i]:''),'').trim(); return t.content.firstElementChild; };
 const norm = s => (s||'').toLowerCase();
 const isRemote = u => /^https?:\/\//i.test(u||'');
+const isLocalHost = () => /^(localhost|127\.0\.0\.1|\[::1\])$/i.test(location.hostname||'');
 function localThumb(pack, page){
   const cat = (pack && pack.category) ? String(pack.category) : 'pack';
   const slug = (page && page.layout_slug) ? page.layout_slug : (pack?.pack_id||'');
@@ -31,10 +32,18 @@ function localThumb(pack, page){
 }
 function heroThumb(pack){
   const pages = pack.pages||[];
-  const home = pages.find(p=>/home-page$/i.test(p.layout_slug));
-  const chosen = (home||pages[0]||{});
-  const th = chosen.thumbnail||'';
-  return isRemote(th) ? localThumb(pack, chosen) : th;
+  // Prefer a home page WITH a thumbnail, otherwise any page WITH a thumbnail
+  const homeWithThumb = pages.find(p => /home-page$/i.test(p.layout_slug||'') && !!p.thumbnail);
+  const anyWithThumb = pages.find(p => !!p.thumbnail);
+  const fallbackHome = pages.find(p => /home-page$/i.test(p.layout_slug||''));
+  const chosen = homeWithThumb || anyWithThumb || fallbackHome || pages[0] || null;
+  if (!chosen) return '';
+  const th = chosen.thumbnail || '';
+  // On localhost, fall back to local thumbs if the URL points to GitHub Pages (which may not have synced yet)
+  if (isLocalHost() && /^https?:\/\/[^/]*github\.io\//i.test(th)) return localThumb(pack, chosen);
+  // If still empty but we have a chosen page, try local fallback on localhost
+  if (isLocalHost() && !th) return localThumb(pack, chosen);
+  return th;
 }
 
 function renderPackCard(pack){
@@ -58,7 +67,7 @@ function renderPackPages(pack){
   for (const page of (pack.pages||[])){
     const row = html`
       <div class="page">
-        <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name} – ${page.page_name}" src="${isRemote(page.thumbnail)?localThumb(pack,page):page.thumbnail||''}">
+        <img class="thumb" loading="lazy" decoding="async" alt="${pack.pack_name} – ${page.page_name}" src="${(isLocalHost() && ((/^https?:\/\/[^/]*github\.io\//i.test(page.thumbnail||'')) || !(page.thumbnail||'').length)) ? localThumb(pack,page) : (page.thumbnail||'')}">
         <div class="title small">${page.page_name}</div>
         <div class="row">
           <a class="btn" href="${page.layout_url}" target="_blank" rel="noopener">Layout</a>

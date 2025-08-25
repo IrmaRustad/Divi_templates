@@ -158,6 +158,61 @@ function extractLiveDemoLink($){
   return liveDemo;
 }
 
+// Crawl Divi blog posts under /blog/divi-resources/ and extract Live Demo links per pack
+async function fetchBlogPackItemsAll(cfg, maxPages=120){
+  const itemsById = new Map();
+  const cheerio = await import('cheerio');
+  function abs(u){ return u && u.startsWith('http') ? u : (u ? `https://www.elegantthemes.com${u}` : ''); }
+  async function collectPage(url){
+    try{
+      const html = await politeFetch(url, cfg);
+      const $ = cheerio.load(html);
+      const posts = new Set();
+      $('a[href^="/blog/"]').each((i,el)=>{
+        const h = $(el).attr('href')||'';
+        if (/^\/blog\/divi-resources\//.test(h)) posts.add(abs(h.replace(/#.*$/,'')));
+      });
+      return Array.from(posts);
+    } catch { return []; }
+  }
+  const pageUrls = [];
+  for (let i=1;i<=maxPages;i++){
+    pageUrls.push(i===1 ? 'https://www.elegantthemes.com/blog/divi-resources/' : `https://www.elegantthemes.com/blog/divi-resources/page/${i}/`);
+  }
+  const seenPosts = new Set();
+  for (const pg of pageUrls){
+    const urls = await collectPage(pg);
+    for (const u of urls) seenPosts.add(u.replace(/\/$/,''));
+  }
+  for (const postUrl of Array.from(seenPosts)){
+    try{
+      const html = await politeFetch(postUrl, cfg);
+      const $ = (await import('cheerio')).load(html);
+      const demoLinks = new Set();
+      $('a[href$="/live-demo"], a[href$="/live-demo/"]').each((i,el)=>{
+        const href = $(el).attr('href')||''; if (!/\/layouts\//.test(href)) return;
+        demoLinks.add(abs(href).replace(/\/$/,''));
+      });
+      const pages = [];
+      for (const demo of Array.from(demoLinks)){
+        try{ const meta = deriveFromDemoUrl(demo); pages.push(meta); } catch {}
+      }
+      if (!pages.length) continue;
+      const byPack = new Map();
+      for (const p of pages){ const arr = byPack.get(p.packId) || []; arr.push(p); byPack.set(p.packId, arr); }
+      for (const [pid, arr] of byPack){
+        const cat = arr[0].category;
+        const pack = itemsById.get(pid) || { pack_id: pid, pack_name: titleCaseFromSlug(pid), category: cat, source_post: postUrl, pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
+        const existingSlugs = new Set(pack.pages.map(pg=>pg.layout_slug));
+        for (const meta of arr){ if (existingSlugs.has(meta.layoutSlug)) continue; pack.pages.push({ page_name: meta.pageName, layout_slug: meta.layoutSlug, demo_url: `${meta.layoutUrl}/live-demo`, layout_url: meta.layoutUrl, thumbnail: '' }); }
+        itemsById.set(pid, pack);
+      }
+    } catch {}
+  }
+  return Array.from(itemsById.values());
+}
+
+
 async function cmdDiscover(){
   await ensureDirs();
   await ensureCache();
@@ -198,11 +253,77 @@ async function cmdDiscover(){
         } catch {}
       }
     } catch {}
+  // Crawl Divi blog "divi-resources" posts and extract all Live Demo links per pack
+  async function fetchBlogPackItems(maxPages=120){
+    const itemsById = new Map();
+    const cheerio = await import('cheerio');
+    function abs(u){ return u && u.startsWith('http') ? u : (u ? `https://www.elegantthemes.com${u}` : ''); }
+    async function collectPage(url){
+      try{
+        const html = await politeFetch(url, cfg);
+        const $ = cheerio.load(html);
+        const posts = new Set();
+        $('a[href^="/blog/"]').each((i,el)=>{
+          const h = $(el).attr('href')||'';
+          if (/^\/blog\/divi-resources\//.test(h)) posts.add(abs(h.replace(/#.*$/,'')));
+        });
+        return Array.from(posts);
+      } catch { return []; }
+    }
+    // Discover blog post URLs across the resources archive pages
+    const pageUrls = [];
+    for (let i=1;i<=maxPages;i++){
+      pageUrls.push(i===1 ? 'https://www.elegantthemes.com/blog/divi-resources/' : `https://www.elegantthemes.com/blog/divi-resources/page/${i}/`);
+    }
+    const seenPosts = new Set();
+    for (const pg of pageUrls){
+      const urls = await collectPage(pg);
+      for (const u of urls) seenPosts.add(u.replace(/\/$/,''));
+    }
+    // Parse each post to extract demo links and group by pack
+    for (const postUrl of Array.from(seenPosts)){
+      try{
+        const html = await politeFetch(postUrl, cfg);
+        const $ = (await import('cheerio')).load(html);
+        const demoLinks = new Set();
+        $('a[href$="/live-demo"], a[href$="/live-demo/"]').each((i,el)=>{
+          const href = $(el).attr('href')||''; if (!/\/layouts\//.test(href)) return;
+          demoLinks.add(abs(href).replace(/\/$/,''));
+        });
+        const pages = [];
+        for (const demo of Array.from(demoLinks)){
+          try{
+            const meta = deriveFromDemoUrl(demo);
+            pages.push(meta);
+          } catch {}
+        }
+        if (!pages.length) continue;
+        const byPack = new Map();
+        for (const p of pages){
+          const arr = byPack.get(p.packId) || [];
+          arr.push(p); byPack.set(p.packId, arr);
+        }
+        for (const [pid, arr] of byPack){
+          const cat = arr[0].category;
+          const pack = itemsById.get(pid) || { pack_id: pid, pack_name: titleCaseFromSlug(pid), category: cat, source_post: postUrl, pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
+          const existingSlugs = new Set(pack.pages.map(pg=>pg.layout_slug));
+          for (const meta of arr){
+            if (existingSlugs.has(meta.layoutSlug)) continue;
+            pack.pages.push({ page_name: meta.pageName, layout_slug: meta.layoutSlug, demo_url: `${meta.layoutUrl}/live-demo`, layout_url: meta.layoutUrl, thumbnail: '' });
+          }
+          itemsById.set(pid, pack);
+        }
+      } catch {}
+    }
+    return Array.from(itemsById.values());
+  }
+
     return Array.from(links);
   }
 
   const hubLinks = extractLayoutLinks($hub);
   const mapLinks = await fetchSitemapLinks();
+  const blogItems = await fetchBlogPackItemsAll(cfg);
 
   // Crawl category archives via Playwright to capture packs not in sitemap/hub (infinite scroll)
   async function fetchCategoryPackLinks(){
@@ -289,11 +410,16 @@ async function cmdDiscover(){
       await ctx.close();
     } finally { await browser.close(); }
     return Array.from(links);
+
   }
 
   const catLinks = await fetchCategoryPackLinks();
   const hubPagedLinks = await fetchHubPaginatedLinks();
   const merged = Array.from(new Set([...hubLinks, ...mapLinks, ...catLinks, ...hubPagedLinks]));
+
+  // Merge blog-derived items upfront so we have packs with full page lists even if the headless extraction returns only one
+  const packsById = new Map();
+  for (const p of blogItems){ packsById.set(p.pack_id, p); }
 
   // Parse optional --max flag (default 100), allow 0 = no cap
   const extra = process.argv.slice(3);
@@ -305,9 +431,8 @@ async function cmdDiscover(){
   }
   const linksToProcess = (max && max > 0) ? merged.slice(0, max) : merged;
 
-  // Use headless browser to enumerate inner page links per pack
+  // Use headless browser to enumerate inner page links per pack (augment/fill gaps)
   const browser = await chromium.launch();
-  const packsById = new Map();
   const allPageLinks = new Set();
   try{
     for (const link of linksToProcess){
@@ -330,13 +455,15 @@ async function cmdDiscover(){
         // Scroll multiple passes to trigger lazy content
         for (let i=0;i<20;i++){ await p.evaluate(()=> window.scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(600); }
         // Robust extraction: any anchors that contain this pack slug and end with -page, anywhere on the page
-        pageLinks = await p.evaluate((packHref)=>{
+        pageLinks = await p.evaluate(()=>{
           const abs = (href) => href && href.startsWith('http') ? href : (href ? `https://www.elegantthemes.com${href}` : '');
           const all = Array.from(document.querySelectorAll('a[href]'))
             .map(a => a.getAttribute('href') || '')
             .filter(Boolean)
             .map(h => abs(h.replace(/#.*$/,'')));
-          const slug = (packHref.split('/').filter(Boolean)[2] || '').replace(/\/$/,'');
+          // Determine the pack base from the current page path, not the full URL string
+          const pathParts = (location.pathname || '/').split('/').filter(Boolean);
+          const slug = (pathParts[2] || '').replace(/\/$/,''); // layouts/<category|pack>/<slug>
           const packBase = slug.replace(/-[^-]+-page$/,'');
           const wanted = all.filter(u => {
             const m = u.match(/\/layouts\/[^/]+\/([a-z0-9-]+)\/?$/i);
@@ -357,7 +484,33 @@ async function cmdDiscover(){
             });
           const urls = Array.from(new Set([...wanted, ...dataPermas])).map(u => u.replace(/\/$/,''));
           return urls.length ? urls : [location.href.replace(/\/$/,'')];
-        }, link);
+        });
+        // Look for an associated Divi blog post and parse its "Live Demos" links for all pages in the pack
+        try{
+          const blogUrl = await p.evaluate(()=>{
+            const cand = Array.from(document.querySelectorAll('a[href*="/blog/divi-resources/"]'))
+              .map(a=>a.getAttribute('href')||'')
+              .find(Boolean);
+            if (!cand) return '';
+            return cand.startsWith('http') ? cand : `https://www.elegantthemes.com${cand}`;
+          });
+          if (blogUrl){
+            const blogHtml = await politeFetch(blogUrl, cfg);
+            const cheerio = await import('cheerio');
+            const $b = cheerio.load(blogHtml);
+            const demoLinks = new Set();
+            $b('a[href$="/live-demo"], a[href$="/live-demo/"]').each((i,el)=>{
+              const href = $b(el).attr('href')||'';
+              const abs = href.startsWith('http') ? href : `https://www.elegantthemes.com${href}`;
+              if (/\/layouts\//i.test(abs)) demoLinks.add(abs.replace(/\/$/,''));
+            });
+            // Convert to layout URLs and filter to this pack base
+            const fromBlog = Array.from(demoLinks).map(u => {
+              try { return deriveFromDemoUrl(u); } catch { return null; }
+            }).filter(Boolean).filter(d => d.packId === packBase).map(d => d.layoutUrl);
+            for (const u of fromBlog){ pageLinks.push(u); }
+          }
+        } catch {}
       } catch {} finally { await ctx.close(); }
 
       for (const loc of pageLinks){
@@ -380,6 +533,8 @@ async function cmdDiscover(){
         if (!pack.pages.find(x => x.layout_slug === slug)){
           pack.pages.push({ page_name: titleCaseFromSlug(pageName), layout_slug: slug, demo_url: `${loc.replace(/\/$/,'')}/live-demo`, layout_url: loc.replace(/\/$/,''), thumbnail: '' });
         }
+        // If we already have a blog-derived pack for this pid, ensure category and source_post are carried over
+        if (pack && !pack.source_post) pack.source_post = 'https://www.elegantthemes.com/blog/divi-resources/';
       }
     }
   } finally { await browser.close(); }
@@ -643,29 +798,48 @@ async function cmdPublish(){
     }
   } catch {}
 
+  function normalizePackId(id){
+    return String(id||'').replace(/-[^-]+-page$/,'');
+  }
+
   function mergePacks(prevItems, newItems){
     const byId = new Map();
-    for (const p of prevItems || []) byId.set(p.pack_id, JSON.parse(JSON.stringify(p)));
-    for (const p of (newItems || [])){
-      const existing = byId.get(p.pack_id);
-      if (!existing){ byId.set(p.pack_id, JSON.parse(JSON.stringify(p))); continue; }
-      // merge shallow fields
-      existing.pack_name = existing.pack_name || p.pack_name;
-      existing.category = existing.category || p.category;
-      if (!existing.source_post && p.source_post) existing.source_post = p.source_post;
-      // merge facets (prefer newer non-empty values)
-      if (p.facets){ existing.facets = { ...(existing.facets||{}), ...p.facets }; }
-      if (typeof p.approved === 'boolean') existing.approved = p.approved;
-      if (p.version) existing.version = existing.version || p.version;
-      if (p.notes && !existing.notes) existing.notes = p.notes;
-      // merge pages by layout_slug
+
+    function upsertPack(p){
+      const baseId = normalizePackId(p.pack_id);
+      const clone = JSON.parse(JSON.stringify(p));
+      clone.pack_id = baseId;
+      if (!clone.pack_name || /-[^-]+-page$/i.test(p.pack_id)){
+        // Re-title to the base pack when source looked like a page
+        clone.pack_name = titleCaseFromSlug(baseId);
+      }
+      let existing = byId.get(baseId);
+      if (!existing){
+        existing = { pack_id: baseId, pack_name: clone.pack_name, category: clone.category, pages: [], facets: {}, approved: clone.approved, version: clone.version, notes: clone.notes, source_post: clone.source_post };
+        byId.set(baseId, existing);
+      }
+      // Merge shallow fields
+      existing.pack_name = existing.pack_name || clone.pack_name;
+      // Prefer 'pack' category if any source provides it
+      const cat = existing.category || clone.category;
+      existing.category = (cat === 'pack' || clone.category === 'pack') ? 'pack' : cat;
+      if (!existing.source_post && clone.source_post) existing.source_post = clone.source_post;
+      if (clone.facets){ existing.facets = { ...(existing.facets||{}), ...clone.facets }; }
+      if (typeof clone.approved === 'boolean') existing.approved = clone.approved;
+      if (clone.version) existing.version = existing.version || clone.version;
+      if (clone.notes && !existing.notes) existing.notes = clone.notes;
+      // Merge pages by layout_slug
       existing.pages = existing.pages || [];
-      for (const pg of (p.pages || [])){
+      for (const pg of (clone.pages || [])){
         const i = existing.pages.findIndex(x => x.layout_slug === pg.layout_slug);
         if (i === -1) existing.pages.push(pg);
         else existing.pages[i] = { ...existing.pages[i], ...pg };
       }
     }
+
+    for (const p of (prevItems || [])) upsertPack(p);
+    for (const p of (newItems || [])) upsertPack(p);
+
     return Array.from(byId.values());
   }
 

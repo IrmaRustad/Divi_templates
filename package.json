@@ -13,6 +13,7 @@
     "validate": "node ./scripts/index.mjs validate",
     "download:catalog": "node ./scripts/download_catalog.mjs",
     "check-links": "node ./scripts/index.mjs check-links",
+    "preview": "node ./scripts/preview.mjs",
     "postinstall": "playwright install chromium",
     "test": "node ./scripts/index.mjs validate",
     "crawl:loop": "node ./scripts/loop.mjs --interval 180 --max 0"
