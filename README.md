@@ -2,6 +2,14 @@
 
 This repo builds a manifest of Divi live demo pages, generates thumbnails, and validates the output for a client‑facing template picker.
 
+## Live
+- Catalog UI: https://irmarustad.github.io/Divi_templates/
+- Manifest JSON: https://irmarustad.github.io/Divi_templates/manifest.json
+- Thumbnails: https://irmarustad.github.io/Divi_templates/thumbs/<category>/<layout_slug>.webp
+- Permanent snapshot (release): https://github.com/IrmaRustad/Divi_templates/releases — we will publish v1.0.0 so you have an immutable URL like:
+  - https://raw.githubusercontent.com/IrmaRustad/Divi_templates/v1.0.0/dist/manifest.json
+
+
 ## Requirements
 - Node.js 20+
 - Windows/Linux/macOS
@@ -33,7 +41,7 @@ npm run check-links# link health check (stub)
 ```json
 {
   "cdn": {
-    "baseUrl": "https://raw.githubusercontent.com/IrmaRustad/Divi_templates/main/dist",
+    "baseUrl": "https://irmarustad.github.io/Divi_templates",
     "rewriteThumbPaths": true
   }
 }

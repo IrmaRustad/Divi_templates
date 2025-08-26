@@ -546,6 +546,94 @@ async function cmdDiscover(){
   console.log(`discover: ${items.length} pack(s). Total pages=${Array.from(allPageLinks).length}. max=${max}.`);
 }
 
+// Targeted completion: expand packs that currently have only one page
+async function cmdCompleteSingletons(){
+  await ensureDirs();
+  await ensureCache();
+  const cfg = await loadConfig();
+  // Load live manifest (prefer published) to target true singletons
+  let manifest = { items: [] };
+  try {
+    const base = cfg.cdn?.baseUrl?.replace(/\/$/, '');
+    if (base){
+      const res = await fetch(`${base}/manifest.json`, { headers: { 'user-agent': cfg.userAgent || 'DiviCatalogBot/1.0' } });
+      if (res.ok) manifest = await res.json();
+    }
+  } catch {}
+  if (!manifest.items?.length){
+    // Fallback to local dist if CDN not available
+    try { manifest = await fs.readJson(path.join(distDir, 'manifest.json')); } catch {}
+  }
+  const singletons = (manifest.items||[]).filter(p => (p.pages||[]).length === 1);
+  if (!singletons.length){ console.log('complete-singletons: no single-page packs found'); return; }
+
+  console.log(`complete-singletons: targeting ${singletons.length} packs`);
+  const { chromium } = await import('playwright');
+  const browser = await chromium.launch();
+  const packsById = new Map();
+  try {
+    for (const pack of singletons){
+      const pg = (pack.pages||[])[0];
+      const startUrl = pg?.layout_url || pg?.demo_url?.replace(/\/live-demo\/?$/, '') || '';
+      if (!startUrl) continue;
+      const ctx = await browser.newContext({ viewport: { width: cfg.viewports.w, height: cfg.viewports.h } });
+      const p = await ctx.newPage();
+      try{
+        await p.goto(startUrl, { waitUntil: 'domcontentloaded', timeout: cfg.timeouts.navMs });
+        try { await p.locator('#onetrust-accept-btn-handler, button:has-text("Accept All"), button:has-text("Accept")').first().click({ timeout: 2000 }); } catch {}
+        const links = await p.evaluate(() => Array.from(document.querySelectorAll('a[href*="/layouts/"]')).map(a=>a.getAttribute('href')));
+        const abs = links
+          .map(href => { try { return new URL(href, location.href).href; } catch { return null; } })
+          .filter(u => !!u)
+          .map(u => u.replace(/\/$/, ''));
+        const unique = Array.from(new Set(abs)).filter(u => /\/layouts\//i.test(u));
+        for (const loc of unique){
+          try{
+            const uu = new URL(loc);
+            const parts = uu.pathname.split('/').filter(Boolean);
+            if (parts.length < 3) continue;
+            const category = parts[1];
+            const slug = parts[2];
+            const segs = slug.split('-');
+            let pageName = 'Page';
+            if (segs.length >= 2 && segs[segs.length-1] === 'page'){ pageName = segs[segs.length-2]; }
+            const pid = slug.replace(/-[^-]+-page$/, '');
+            const pname = titleCaseFromSlug(pid);
+            let rec = packsById.get(pid);
+            if (!rec){
+              rec = { pack_id: pid, pack_name: pname, category, source_post: 'https://www.elegantthemes.com/layouts/', pages: [], facets: {}, approved: true, version: '1.0.0', notes: '' };
+              packsById.set(pid, rec);
+            }
+            if (!rec.pages.find(x => x.layout_slug === slug)){
+              rec.pages.push({ page_name: titleCaseFromSlug(pageName), layout_slug: slug, demo_url: `${loc.replace(/\/$/,'')}/live-demo`, layout_url: loc.replace(/\/$/,''), thumbnail: '' });
+            }
+          } catch {}
+        }
+      } catch {} finally { await ctx.close(); }
+    }
+  } finally { await browser.close(); }
+
+  // Merge into data/work/discovered.json
+  const discoveredPath = path.join(dataDir, 'work', 'discovered.json');
+  let data = { items: [] };
+  try { data = await fs.readJson(discoveredPath); } catch {}
+  const byId = new Map((data.items||[]).map(p => [p.pack_id, p]));
+  for (const p of packsById.values()){
+    const existing = byId.get(p.pack_id) || { ...p, pages: [] };
+    const pages = existing.pages || [];
+    for (const pg of p.pages){
+      const i = pages.findIndex(x => x.layout_slug === pg.layout_slug);
+      if (i === -1) pages.push(pg); else pages[i] = { ...pages[i], ...pg };
+    }
+    existing.pages = pages;
+    byId.set(p.pack_id, existing);
+  }
+  const merged = { items: Array.from(byId.values()) };
+  await fs.writeJson(discoveredPath, merged, { spaces: 2 });
+  console.log(`complete-singletons: merged ${packsById.size} targeted pack(s) into discovered.json`);
+}
+
+
 async function cmdThumbs(){
   const cfg = await loadConfig();
   const discoveredPath = path.join(dataDir, 'work', 'discovered.json');
@@ -799,8 +887,27 @@ async function cmdPublish(){
   } catch {}
 
   function normalizePackId(id){
-    return String(id||'').replace(/-[^-]+-page$/,'');
+    // Collapse page-derived slugs into their base pack id
+    let base = String(id||'').trim().toLowerCase();
+    // Remove trailing "-xyz-page"
+    base = base.replace(/-[^-]+-page$/,'');
+    // Remove common page-type suffixes (e.g., "-about", "-contact", "-sign-up")
+    const tokens = [
+      'home','landing','about','contact','blog','shop','services','service','service-2','pricing','team','portfolio','gallery','case','case-study','sign','sign-up','get','next','episode','episodes','post','post-2','how-it','resources','rooms','room','sale','menu','class','classes','course','courses','faq','events','schedule','schedules','speakers','careers','features','documentation','donate','issues','seller','market','categories','recipe','recipes','community','support','coming-soon','listings','vehicles','cleanse','cleanses','product','products','project','projects'
+    ];
+    for (const t of tokens){ base = base.replace(new RegExp(`-${t}$`), ''); }
+    base = base.replace(/-+/g,'-').replace(/^-|-$/g,'');
+    return base;
   }
+
+  // Explicit alias map for residual historical slugs
+  const packAliases = new Map([
+    ['learning-management-lms','lms'],
+    ['software-marketing-coming','software-marketing'],
+    ['video-game-coming','video-game'],
+    ['painting-service','painting']
+  ]);
+
 
   function mergePacks(prevItems, newItems){
     const byId = new Map();
@@ -808,15 +915,19 @@ async function cmdPublish(){
     function upsertPack(p){
       const baseId = normalizePackId(p.pack_id);
       const clone = JSON.parse(JSON.stringify(p));
-      clone.pack_id = baseId;
+      // Apply explicit alias if present
+      const alias = packAliases.get(baseId);
+      clone.pack_id = alias || baseId;
+      const canonicalId = clone.pack_id;
+
       if (!clone.pack_name || /-[^-]+-page$/i.test(p.pack_id)){
         // Re-title to the base pack when source looked like a page
         clone.pack_name = titleCaseFromSlug(baseId);
       }
-      let existing = byId.get(baseId);
+      let existing = byId.get(canonicalId);
       if (!existing){
-        existing = { pack_id: baseId, pack_name: clone.pack_name, category: clone.category, pages: [], facets: {}, approved: clone.approved, version: clone.version, notes: clone.notes, source_post: clone.source_post };
-        byId.set(baseId, existing);
+        existing = { pack_id: canonicalId, pack_name: clone.pack_name, category: clone.category, pages: [], facets: {}, approved: clone.approved, version: clone.version, notes: clone.notes, source_post: clone.source_post };
+        byId.set(canonicalId, existing);
       }
       // Merge shallow fields
       existing.pack_name = existing.pack_name || clone.pack_name;
@@ -907,10 +1018,11 @@ async function main(){
     else if(cmd === 'publish') await cmdPublish();
     else if(cmd === 'validate') await cmdValidate();
     else if(cmd === 'enrich') await cmdEnrich();
+    else if(cmd === 'complete-singletons') await cmdCompleteSingletons();
     else if(['check-links'].includes(cmd)){
       console.log(`${cmd}: not implemented yet (stub)`);
     } else {
-      console.log('Usage: node ./scripts/index.mjs <discover|thumbs|publish|validate|enrich|check-links>');
+      console.log('Usage: node ./scripts/index.mjs <discover|thumbs|publish|validate|enrich|complete-singletons|check-links>');
       process.exit(2);
     }
   } catch (err){
