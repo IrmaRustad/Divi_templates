@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Divi Catalog Browser</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Divi Catalog Browser</h1>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search packs or category…" />
+      <select id="category">
+        <option value="">All categories</option>
+      </select>
+      <div id="types" class="filters"></div>
+      <select id="facet-bg"><option value="">bg:any</option></select>
+      <select id="facet-color"><option value="">color:any</option></select>
+      <select id="facet-mood"><option value="">mood:any</option></select>
+      <select id="facet-density"><option value="">density:any</option></select>
+      <select id="facet-contrast"><option value="">contrast:any</option></select>
+      <input id="min-pages" type="number" min="0" placeholder="min pages" />
+      <label class="small"><input id="approved-only" type="checkbox" /> approved</label>
+      <label class="small"><input id="has-thumb" type="checkbox" /> has thumbs</label>
+      <button id="download-offline" class="btn">Download for offline</button>
+      <span id="counts"></span>
+    </div>
+  </header>
+  <main>
+    <div id="grid" class="grid"></div>
+  </main>
+  <footer class="footer">
+    <a href="./manifest.json" target="_blank" rel="noopener">manifest.json</a>
+    <span>·</span>
+    <a href="https://github.com/IrmaRustad/Divi_templates" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+  <script src="./app.js" type="module"></script>
+</body>
+</html>
+
